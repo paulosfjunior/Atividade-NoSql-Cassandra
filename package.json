@@ -1,0 +1,17 @@
+{
+  "name": "atividade-20190424",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Carlos Eduardo, Paulo Freitas e Ricardo Heiji",
+  "description": "Atividade com Cassandra. Montagem de sistema de compra com Cassandra",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "morgan": "~1.9.0"
+  }
+}
