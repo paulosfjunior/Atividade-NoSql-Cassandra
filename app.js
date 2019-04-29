@@ -1,55 +1,83 @@
-const express = require('express');
-const createError = require('http-errors')
-const path = require('path');
-const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const serveStatic = require('serve-static');
+const cors = require('cors');
+const createError = require('http-errors')
+const express = require('express');
+const morgan = require('morgan');
+const path = require('path');
 const serveFavicon = require('serve-favicon');
-const routes = require('./routes/routes');
-const cassandra = require('./cassandra');
+const serveStatic = require('serve-static');
 
-const port = 8080;
 const app = express();
 
-app.use(logger('dev'));
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
+const routes = require('./routes/routes');
+
+const corsOptions = ['http://localhost:4200'];
+
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(serveStatic(path.join(__dirname, 'public')));
 app.use(serveFavicon(path.join(__dirname, '/public/images/favicon.ico')));
 
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json({ extended: true }));
-
-// catch 404 and forward to error handler
-app.use((req, res, next) => {
-  next(createError(404))
-});
-
-// error handler
-app.use((err, req, res, next) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message
-  res.locals.error = req.app.get('env') === 'development' ? err : {}
-
-  // render the error page
-  res.status(err.status || 500)
-  res.render('error')
-})
+app.use(cors());
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     if (corsOptions.indexOf(origin) === -1) {
+//       const msg = 'A política de acesso não permite o acesso ' +
+//                   'a partir da origem especificada.';
+//       return callback(new Error(msg), false);
+//     }
+//     return callback(null, true);
+//   },
+//   optionsSuccessStatus: 200,
+// }));
 
 app.use('/', routes);
 
-app.listen(port, (err) => {
-	try {
-		if (err) throw err;
-    	console.log(`Listening in port ${port}`);
-	} catch (err) {
-    	console.log(err);
-	}
-});
+// carregando funções de erro;
+app.use(paginaNaoEncontrada);
+app.use(manipularErro);
+
+function paginaNaoEncontrada(req, res, next) {
+  const err = new Error('Not Found');
+
+  console.log({err});
+
+  err['name'] = 'Not Found';
+  err['status'] = 404;
+
+  next(err);
+}
+
+function manipularErro(err, req, res, next) {
+  // cabeçalho ja enviado para o cliente
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  if (err.name === 'Not Found') {
+    // define status e mensagem de erro
+    res.status(404).json({
+      tipo: 'erro',
+      mensagem: 'Página não encontrada!',
+    });
+  } else {
+    if (err.name === 'UnauthorizedError') {
+      // define status e mensagem de erro
+      res.status(401).json({
+        tipo: 'erro',
+        mensagem: 'Token de acesso Inválido!',
+      });
+    } else {
+      // define status e mensagem de erro
+      res.status(err.status || 500).json({
+        tipo: 'erro',
+        mensagem: err.message || 'Erro interno do servidor!',
+      });
+    }
+  }
+}
 
 module.exports = app;

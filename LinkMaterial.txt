@@ -1,0 +1,4 @@
+https://cassandra.apache.org/doc/cql3/CQL-3.0.html
+https://docs.datastax.com/en/developer/nodejs-driver/4.0/
+https://www.npmjs.com/package/cassandra-driver
+//github.com/nagypeter/node-cassandra-crud.git
