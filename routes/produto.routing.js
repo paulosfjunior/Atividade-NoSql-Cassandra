@@ -1,6 +1,6 @@
 const express = require('express');
 
-const usuarioServico = require('../services/usuario.service');
+const usuarioServico = require('../services/produto.service');
 
 // carrengado express router
 const rotas = express.Router();
@@ -34,7 +34,7 @@ function getById(req, res) {
         } else {
           res.status(400).json({
             tipo: 'erro',
-            mensagem: 'Usuário não encontrado.'});
+            mensagem: 'Produto não encontrado.'});
         }
       })
       .catch((erro) => {
@@ -52,7 +52,7 @@ function createRegister(req, res) {
         } else {
           res.status(400).json({
             tipo: 'erro',
-            mensagem: 'Usuário não cadastrado.'});
+            mensagem: 'Produto não cadastrado.'});
         }
       })
       .catch((erro) => {
