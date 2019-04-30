@@ -9,15 +9,27 @@
 ## Para executar o projeto siga os passos abaixo:
 *(para os testes o Cassandra já deve estar iniciado e rodando localmente)*
 
-> Clone o projeto
+> ### Clone o projeto
 
-> ``cd atividade-nosql-cassandra``
+### ***Servidor***
+
+> ``cd atividade-nosql-cassandra/server``
 
 > ``npm install``
 
 > ``npm start``
 
-### A aplicação de teste estará sendo executada no caminho [localhost:8080](http://localhost:8080/).
+### O servidor estará sendo executada no caminho [localhost:8080](http://localhost:8080/).
+
+### ***Cliente***
+
+> ``cd atividade-nosql-cassandra/frontend``
+
+> ``npm install``
+
+> ``npm start``
+
+### O servidor estará sendo executada no caminho [localhost:8080](http://localhost:8080/).
 
 ---
 
