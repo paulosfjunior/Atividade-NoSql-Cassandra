@@ -10,8 +10,8 @@ export interface Item{
     price:string;
 
 }
-export interface Client{
+export interface Cart{
     customer:Customer;
     items:Item[]
-    
+
 }
