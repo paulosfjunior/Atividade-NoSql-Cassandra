@@ -17,7 +17,7 @@
 
 > ``npm start``
 
-### A aplicação de teste estará sendo executada no caminho [localhost:3000](http://localhost:8080/).
+### A aplicação de teste estará sendo executada no caminho [localhost:8080](http://localhost:8080/).
 
 ---
 
