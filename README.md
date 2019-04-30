@@ -29,7 +29,7 @@
 
 > ``npm start``
 
-### O servidor estará sendo executada no caminho [localhost:8080](http://localhost:8080/).
+### O cliente estará sendo executada no caminho [localhost:3333](http://localhost:3333/).
 
 ---
 
