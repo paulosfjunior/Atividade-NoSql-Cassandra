@@ -65,7 +65,7 @@ function listarRegistro() {
     
         cassandra.execute(query, (e, r) => {
           if (e) reject(e);
-          if (r) resolve(r);
+          if (r) resolve(r.rows);
         });
       })
       .catch((e) => reject(e));
@@ -118,7 +118,7 @@ function procurarRegistro(p) {
 ;
         cassandra.execute(query, (e, r) => {
           if (e) reject(e);
-          if (r) resolve(r);
+          if (r) resolve(r.rows);
         });
       })
       .catch((e) => reject(e));
