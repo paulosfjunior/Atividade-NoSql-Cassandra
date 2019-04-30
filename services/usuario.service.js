@@ -28,8 +28,8 @@ function tabelaExiste() {
   return new Bluebird((resolve, reject) => {
     keyspaceExiste()
       .then((r) => {
-        const query = 'CREATE TABLE IF NOT EXISTS atividadenosql.usuario ' + 
-                      '(id timeuuid, usuario text, nome text, endereco text, email text, hash text, salt text, PRIMARY KEY(id))';
+        const query = "CREATE TABLE IF NOT EXISTS atividadenosql.usuario " + 
+                      "(id timeuuid, usuario text, nome text, endereco text, email text, hash text, salt text, PRIMARY KEY(id))";
     
         cassandra.execute(query, (e, r) => {
           if (e) reject(e);
@@ -61,7 +61,7 @@ function listarRegistro() {
   return new Bluebird((resolve, reject) => {
     tabelaExiste()
       .then((r) => {
-        const query = 'SELECT * FROM atividadenosql.usuario';
+        const query = "SELECT * FROM atividadenosql.usuario";
     
         cassandra.execute(query, (e, r) => {
           if (e) reject(e);
@@ -76,14 +76,14 @@ function editarRegistro(p) {
   return new Bluebird((resolve, reject) => {
     tabelaExiste()
       .then((r) => {
-        const query = 'UPDATE atividadenosql.usuario SET ' +
-                      'usuario = ' + p.usuario + ', ' + 
-                      'nome = ' + p.nome + ', ' + 
-                      'endereco = ' + p.endereco + ', ' + 
-                      'email = ' + p.email + ', ' + 
-                      'hash = ' + p.hash + ', ' + 
-                      'salt = ' + p.salt + 
-                      'WHERE id = ' + p.id;
+        const query = "UPDATE atividadenosql.usuario SET " +
+                      "usuario = '" + p.usuario + "', " + 
+                      "nome = '" + p.nome + "', " + 
+                      "endereco = '" + p.endereco + "', " + 
+                      "email = '" + p.email + "', " + 
+                      "hash = '" + p.hash + "', " + 
+                      "salt = '" + p.salt + "' " +
+                      "WHERE id = " + p.id;
     
         cassandra.execute(query, (e, r) => {
           if (e) reject(e);
@@ -99,9 +99,9 @@ function deletarRegistro(p) {
     tabelaExiste()
       .then((r) => {
 
-        const query = 'DELETE FROM atividadenosql.usuario ' +
-                      'WHERE id ' +
-                      Array.isArray(p.id) ? p.id.length > 1 ? 'IN (' + p.id[0] + ', ' + p.id[1] + ')' : '= ' + p.id[0] : '= ' + p.id;
+        const query = "DELETE FROM atividadenosql.usuario " +
+                      "WHERE id " +
+                      Array.isArray(p.id) ? p.id.length > 1 ? "IN (" + p.id[0] + ", " + p.id[1] + ")" : "= " + p.id[0] : "= " + p.id;
     
         cassandra.execute(query, (e, r) => {
           if (e) reject(e);
@@ -116,8 +116,8 @@ function procurarRegistro(p) {
   return new Bluebird((resolve, reject) => {
     tabelaExiste()
       .then((r) => {
-        const query = 'SELECT * FROM atividadenosql.usuario ' +
-                      'WHERE id = ' + p
+        const query = "SELECT * FROM atividadenosql.usuario " +
+                      "WHERE id = " + p;
 ;
         cassandra.execute(query, (e, r) => {
           if (e) reject(e);

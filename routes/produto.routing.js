@@ -9,6 +9,7 @@ const rotas = express.Router();
 rotas.get('/', getAll);
 rotas.get('/p/:id', getById);
 rotas.post('/r', createRegister);
+rotas.post('/e', updateRegister);
 
 module.exports = rotas;
 
@@ -53,6 +54,24 @@ function createRegister(req, res) {
           res.status(400).json({
             tipo: 'erro',
             mensagem: 'Produto não cadastrado.'});
+        }
+      })
+      .catch((erro) => {
+        res.status(400).json({
+          tipo: 'erro',
+          mensagem: erro});
+      });
+}
+
+function updateRegister(req, res) {
+  usuarioServico.editar(req.body)
+      .then((resultado) => {
+        if (resultado) {
+          res.send(resultado);
+        } else {
+          res.status(400).json({
+            tipo: 'erro',
+            mensagem: 'Produto não foi alterado.'});
         }
       })
       .catch((erro) => {
