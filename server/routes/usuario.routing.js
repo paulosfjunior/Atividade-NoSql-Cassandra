@@ -11,6 +11,7 @@ rotas.get('/:id', getById);
 rotas.post('/', createRegister);
 rotas.put('/:id', updateRegister);
 rotas.delete('/:id', deleteRegister);
+rotas.post('/autenticar', authUser);
 
 module.exports = rotas;
 
@@ -105,5 +106,32 @@ function deleteRegister(req, res) {
         res.status(400).json({
           tipo: 'erro',
           mensagem: 'Usuário não foi apagado.'});
+      });
+}
+
+function authUser(req, res) {
+  usuarioServico.autenticar(req.body.usuario)
+      .then((resultado) => {
+        if (resultado) {
+          // modificar para validar corretamente com hash e salt
+          if (resultado.hash == req.body.senha) {
+            res.json({
+              tipo: 'sucesso',
+              mensagem: true});
+          } else {
+            res.json({
+              tipo: 'sucesso',
+              mensagem: false});
+          }
+        } else {
+          res.status(400).json({
+            tipo: 'erro',
+            mensagem: 'Usuário não encontrado.'});
+        }
+      })
+      .catch((erro) => {
+        res.status(400).json({
+          tipo: 'erro',
+          mensagem: 'Usuário não encontrado.'});
       });
 }

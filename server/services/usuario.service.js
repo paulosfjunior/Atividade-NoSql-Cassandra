@@ -10,6 +10,7 @@ servico.listar = listarRegistro
 servico.editar = editarRegistro
 servico.deletar = deletarRegistro
 servico.procurar = procurarRegistro
+servico.autenticar = autenticarUsuario
 
 module.exports = servico
 
@@ -143,6 +144,24 @@ function procurarRegistro(id) {
 
         let query = 'SELECT * FROM atividadenosql.usuario ' +
                     'WHERE id = :id';
+;
+        cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
+          if (e) reject(e);
+          if (r) resolve(r.rows);
+        });
+      })
+      .catch((e) => reject(e));
+  })
+}
+
+function autenticarUsuario(usuario) {
+  return new Bluebird((resolve, reject) => {
+    tabelaExiste()
+      .then((r) => {
+        let parametro = {usuario: usuario};
+
+        let query = 'SELECT * FROM atividadenosql.usuario ' +
+                    'WHERE usuario = :usuario';
 ;
         cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
           if (e) reject(e);
