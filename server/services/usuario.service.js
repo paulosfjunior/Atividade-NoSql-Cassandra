@@ -64,6 +64,8 @@ function criarRegistro(p) {
       .then((r) => {
         let parametro = p;
         parametro.id = uuid();
+        parametro.hash = p.senha;
+        parametro.salt = '0'; // gerar salt para salvar no cadastro
 
         let query = 'INSERT INTO atividadenosql.usuario ' +
                     '(id, usuario, nome, endereco, email, hash, salt, regra) VALUES ' +
@@ -99,6 +101,8 @@ function editarRegistro(id, p) {
       .then((r) => {
         let parametro = p;
         parametro.id = id;
+        parametro.hash = p.senha;
+        parametro.salt = '0'; // gerar salt para salvar no cadastro
 
         let query = 'UPDATE atividadenosql.usuario SET ' +
                     'usuario = :usuario, ' + 
