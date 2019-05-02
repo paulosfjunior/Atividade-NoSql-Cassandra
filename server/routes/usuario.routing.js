@@ -24,7 +24,7 @@ function getAll(req, res) {
       .catch((erro) => {
         res.status(400).json({
           tipo: 'erro',
-          mensagem: erro});
+          mensagem: 'Não foi possivel carregar lista de usuários.'});
       });
 }
 
@@ -44,7 +44,7 @@ function getById(req, res) {
       .catch((erro) => {
         res.status(400).json({
           tipo: 'erro',
-          mensagem: erro});
+          mensagem: 'Usuário não encontrado.'});
       });
 }
 
@@ -64,7 +64,7 @@ function createRegister(req, res) {
       .catch((erro) => {
         res.status(400).json({
           tipo: 'erro',
-          mensagem: erro});
+          mensagem: 'Usuário não cadastrado.'});
       });
 }
 
@@ -84,7 +84,7 @@ function updateRegister(req, res) {
       .catch((erro) => {
         res.status(400).json({
           tipo: 'erro',
-          mensagem: erro});
+          mensagem: 'Usuário não foi alterado.'});
       });
 }
 
@@ -104,6 +104,6 @@ function deleteRegister(req, res) {
       .catch((erro) => {
         res.status(400).json({
           tipo: 'erro',
-          mensagem: erro});
+          mensagem: 'Usuário não foi apagado.'});
       });
 }
