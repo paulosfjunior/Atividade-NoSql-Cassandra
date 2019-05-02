@@ -66,8 +66,8 @@ function criarRegistro(p) {
         parametro.id = uuid();
 
         let query = 'INSERT INTO atividadenosql.usuario ' +
-                    '(id, usuario, nome, endereco, email, hash, salt) VALUES ' +
-                    '(:id, :usuario, :nome, :endereco, :email, :hash, :salt)';
+                    '(id, usuario, nome, endereco, email, hash, salt, regra) VALUES ' +
+                    '(:id, :usuario, :nome, :endereco, :email, :hash, :salt, :regra)';
 
         cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
           if (e) reject(e);
@@ -106,7 +106,8 @@ function editarRegistro(id, p) {
                     'endereco = :endereco, ' + 
                     'email = :email, ' + 
                     'hash = :hash, ' + 
-                    'salt = :salt ' +
+                    'salt = :salt, ' +
+                    'regra = :regra ' +
                     'WHERE id = :id';
     
         cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
