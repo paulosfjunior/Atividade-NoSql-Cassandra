@@ -24,7 +24,7 @@ function getAll(req, res) {
       .catch((erro) => {
         res.status(400).json({
           tipo: 'erro',
-          mensagem: 'Não foi possivel carregar lista de produto.'});
+          mensagem: 'Não foi possivel carregar lista de produtos.'});
       });
 }
 
