@@ -64,7 +64,7 @@ function tabelaExiste() {
         tipoClienteExiste()
           .then((r) => {
             let query = 'CREATE TABLE IF NOT EXISTS atividadenosql.pedido ' + 
-                        '(id uuid, cliente frozen<clientePedido>, data_pedido date, carrinho list<frozen<itemCarrinho>>, valor_pedido float, forma_pagamento text, PRIMARY KEY(id))';
+                        '(id uuid, cliente frozen<clientePedido>, data_pedido date, carrinho list<frozen<itemCarrinho>>, valor_pedido float, forma_pagamento text, status text, PRIMARY KEY(id))';
     
             cassandra.execute(query, (e, r) => {
               if (e) reject(e);
@@ -93,8 +93,8 @@ function criarRegistro(p) {
         }
 
         let query = 'INSERT INTO atividadenosql.pedido ' +
-                    '(id, cliente, data_pedido, carrinho, valor_pedido, forma_pagamento) VALUES ' +
-                    '(:id, :cliente, :data_pedido, :carrinho, :valor_pedido, :forma_pagamento)';
+                    '(id, cliente, data_pedido, carrinho, valor_pedido, forma_pagamento, status) VALUES ' +
+                    '(:id, :cliente, :data_pedido, :carrinho, :valor_pedido, :forma_pagamento, :status)';
 
         cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
           if (e) reject(e);
@@ -139,7 +139,8 @@ function editarRegistro(id, p) {
                     'data_pedido = :data_pedido, ' + 
                     'carrinho = :carrinho, ' + 
                     'valor_pedido = :valor_pedido, ' + 
-                    'forma_pagamento = :forma_pagamento ' + 
+                    'forma_pagamento = :forma_pagamento, ' + 
+                    'status = :status ' + 
                     'WHERE id = :id';
     
         cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
@@ -173,10 +174,13 @@ function procurarRegistro(id) {
   return new Bluebird((resolve, reject) => {
     tabelaExiste()
       .then((r) => {
-        let parametro = {id: id};
+        let parametro = {
+          id: id,
+          status: 'Aberto'
+        };
 
         let query = 'SELECT * FROM atividadenosql.pedido ' +
-                    'WHERE id = :id';
+                    'WHERE id = :id AND status = :status';
 ;
         cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
           if (e) reject(e);
