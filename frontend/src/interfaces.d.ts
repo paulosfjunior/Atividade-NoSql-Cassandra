@@ -11,6 +11,7 @@ export interface Item{
     price:string;
 }
 export interface Cart{
+    payment?:string;
     customer:Customer;
     items:Item[]
     enable:boolean

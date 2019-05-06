@@ -1,4 +1,4 @@
-import { Component, Prop, Element, Event,EventEmitter, Listen } from "@stencil/core";
+import { Component, Prop, Element, Event, EventEmitter, Listen } from "@stencil/core";
 import { CartProvider } from "../../global/defaultProvider";
 
 @Component({
@@ -9,16 +9,16 @@ export class appOpenCartModal {
     @Prop({ mutable: true }) open
     @Prop({ mutable: true }) cartProvider: CartProvider = null
     @Element() el: HTMLElement;
-    @Event() close:EventEmitter
+    @Event() close: EventEmitter
     componentDidLoad() {
         this.el.querySelector("span").onclick = () => { this.close.emit() }
     }
-    endCart(){
-        this.cartProvider.closeEnableCart();
+    endCart(type) {
+        this.cartProvider.closeEnableCart(type);
         this.close.emit()
     }
     @Listen("close")
-    onCloseHandler(){
+    onCloseHandler() {
         this.open = false
     }
     render() {
@@ -28,14 +28,27 @@ export class appOpenCartModal {
                 {this.cartProvider.getEnableCart() ? [this.cartProvider.getEnableCart()].map(cart => {
                     return [
                         <div>
-                            <h1>{(()=>{console.log(cart.items);return cart.customer.name})()}</h1>
-                            
-                            {cart.items.length?cart.items.map(cartItem => {
+                            <h1>{(() => { console.log(cart.items); return cart.customer.name })()}</h1>
+
+                            {cart.items.length ? cart.items.map(cartItem => {
                                 return <ion-item>{cartItem.name}<div class="cartItemPrice">{cartItem.price}</div></ion-item>
                             })
-                            :<h4 class ="emptyCart">Carrinho vazio</h4>}
-                            {this.cartProvider.getEnableCart().items.length?<ion-button color="danger" onClick={()=>{this.endCart()}}>Finalizar Compra</ion-button>:""}
+                                : <h4 class="emptyCart">Carrinho vazio</h4>}
+                            {this.cartProvider.getEnableCart().items.length ?<div>
+                                <div class="dropdown">
+                                    <ion-button id="endCart">Finalizar Compra</ion-button>
+                                    <div class="dropdown-content">
+                                    <ion-button expand="full" class="Credito" color="danger" onClick={(e:any) => { this.endCart(e.target.getAttribute("class")) }}>Credito</ion-button>
+                                    <ion-button expand="full" class="Debito" color="danger" onClick={(e:any) => { this.endCart(e.target.getAttribute("class")) }}>Debito</ion-button>
+                                    <ion-button expand="full" class="A vista" color="danger" onClick={(e:any) => { this.endCart(e.target.getAttribute("class")) }}>A Vista</ion-button>
+                                    <ion-button expand="full" class="Boleto Bancario" color="danger" onClick={(e:any) => { this.endCart(e.target.getAttribute("class")) }}>Boleto Bancario</ion-button>
+                                    
+                                    </div>
+                                </div>
+                                </div>
                             
+                            : ""}
+
                         </div>
                     ]
                 }) : ""}

@@ -15,7 +15,7 @@ export class AppLogin {
     }
     render() {
         return [
-            <app-header name="NO-SQL HUB" isHome={true}></app-header>,
+            <app-header name="MERCADINHO DE TUDO" isHome={true}></app-header>,
             <ion-content padding>
                 <ion-card>
                     <ion-item>

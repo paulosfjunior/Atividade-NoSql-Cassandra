@@ -75,7 +75,8 @@ export class CartProvider extends DefaultCartProvider {
     newCart(){
         this.lista.push({enable:true,items:[],customer:JSON.parse(localStorage.getItem("loggedUser"))})
     }
-    closeEnableCart(){
+    closeEnableCart(type){
+        this.lista[this.lista.findIndex((cart) => {return cart == this.getEnableCart()})].payment = type
         this.lista[this.lista.findIndex((cart) => {return cart == this.getEnableCart()})].enable = false
     }
     addItemToCart(item:Item){

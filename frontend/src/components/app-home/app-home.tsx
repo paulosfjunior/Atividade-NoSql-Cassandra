@@ -15,7 +15,7 @@ export class AppHome {
   
   render() {
     return [
-      <app-header name="NO-SQL HUB" isHome={true}></app-header>,
+      <app-header name="MERCADINHO DE TUDO" isHome={true}></app-header>,
       <ion-content padding>
         <app-fab></app-fab>
         <ion-list>

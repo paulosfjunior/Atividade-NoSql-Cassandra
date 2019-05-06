@@ -127,7 +127,7 @@ declare global {
     'app-fab': Components.AppFabAttributes;
     'app-header': Components.AppHeaderAttributes;
     'app-home': Components.AppHomeAttributes;
-    'app-Login': Components.AppLoginAttributes;
+    'app-login': Components.AppLoginAttributes;
     'app-open-cart-modal': Components.AppOpenCartModalAttributes;
     'app-root': Components.AppRootAttributes;
   }
@@ -208,7 +208,7 @@ declare global {
     'app-fab': HTMLAppFabElement
     'app-header': HTMLAppHeaderElement
     'app-home': HTMLAppHomeElement
-    'app-Login': HTMLAppLoginElement
+    'app-login': HTMLAppLoginElement
     'app-open-cart-modal': HTMLAppOpenCartModalElement
     'app-root': HTMLAppRootElement
   }
@@ -222,7 +222,7 @@ declare global {
     'app-fab': HTMLAppFabElement;
     'app-header': HTMLAppHeaderElement;
     'app-home': HTMLAppHomeElement;
-    'app-Login': HTMLAppLoginElement;
+    'app-login': HTMLAppLoginElement;
     'app-open-cart-modal': HTMLAppOpenCartModalElement;
     'app-root': HTMLAppRootElement;
   }
