@@ -1,6 +1,6 @@
 const express = require('express');
 
-const usuarioServico = require('../services/usuario.service');
+const usuarioServico = require('../services/pedido.service');
 
 // carrengado express router
 const rotas = express.Router();
@@ -11,7 +11,6 @@ rotas.get('/:id', getById);
 rotas.post('/', createRegister);
 rotas.put('/:id', updateRegister);
 rotas.delete('/:id', deleteRegister);
-rotas.post('/autenticar', authUser);
 
 module.exports = rotas;
 
@@ -25,7 +24,7 @@ function getAll(req, res) {
       .catch((erro) => {
         res.status(400).json({
           tipo: 'erro',
-          mensagem: 'Não foi possivel carregar lista de usuários.'});
+          mensagem: 'Não foi possivel carregar lista de pedidos.'});
       });
 }
 
@@ -39,13 +38,13 @@ function getById(req, res) {
         } else {
           res.status(400).json({
             tipo: 'erro',
-            mensagem: 'Usuário não encontrado.'});
+            mensagem: 'Pedido não encontrado.'});
         }
       })
       .catch((erro) => {
         res.status(400).json({
           tipo: 'erro',
-          mensagem: 'Usuário não encontrado.'});
+          mensagem: 'Pedido não encontrado.'});
       });
 }
 
@@ -55,17 +54,17 @@ function createRegister(req, res) {
         if (resultado) {
           res.status(200).json({
             tipo: 'sucesso',
-            mensagem: 'Usuário ' + req.body.usuario + ' foi cadastrado.'});
+            mensagem: 'Pedido cadastrado.'});
         } else {
           res.status(400).json({
             tipo: 'erro',
-            mensagem: 'Usuário não cadastrado.'});
+            mensagem: 'Pedido não cadastrado.'});
         }
       })
       .catch((erro) => {
         res.status(400).json({
           tipo: 'erro',
-          mensagem: 'Usuário não cadastrado.'});
+          mensagem: 'Pedido não cadastrado.'});
       });
 }
 
@@ -75,17 +74,17 @@ function updateRegister(req, res) {
         if (resultado) {
           res.status(200).json({
             tipo: 'sucesso',
-            mensagem: 'Usuário ' + req.body.usuario + ' foi alterado.'});
+            mensagem: 'Pedido ' + req.params.id + ' foi alterado.'});
         } else {
           res.status(400).json({
             tipo: 'erro',
-            mensagem: 'Usuário não foi alterado.'});
+            mensagem: 'Pedido ' + req.params.id + ' não foi alterado.'});
         }
       })
       .catch((erro) => {
         res.status(400).json({
           tipo: 'erro',
-          mensagem: 'Usuário não foi alterado.'});
+          mensagem: 'Pedido ' + req.params.id + ' não foi alterado.'});
       });
 }
 
@@ -95,43 +94,16 @@ function deleteRegister(req, res) {
         if (resultado) {
           res.status(200).json({
             tipo: 'sucesso',
-            mensagem: 'Usuário ' + req.params.id + ' foi apagado.'});
+            mensagem: 'Pedido ' + req.params.id + ' foi apagado.'});
         } else {
           res.status(400).json({
             tipo: 'erro',
-            mensagem: 'Usuário não foi apagado.'});
+            mensagem: 'Pedido ' + req.params.id + ' não foi apagado.'});
         }
       })
       .catch((erro) => {
         res.status(400).json({
           tipo: 'erro',
-          mensagem: 'Usuário não foi apagado.'});
-      });
-}
-
-function authUser(req, res) {
-  usuarioServico.autenticar(req.body.usuario)
-      .then((resultado) => {
-        if (resultado) {
-          // modificar para validar corretamente com hash e salt
-          if (resultado.hash == req.body.senha) {
-            res.json({
-              tipo: 'sucesso',
-              mensagem: true});
-          } else {
-            res.json({
-              tipo: 'sucesso',
-              mensagem: false});
-          }
-        } else {
-          res.status(400).json({
-            tipo: 'erro',
-            mensagem: 'Usuário não encontrado.'});
-        }
-      })
-      .catch((erro) => {
-        res.status(400).json({
-          tipo: 'erro',
-          mensagem: 'Usuário não encontrado.'});
+          mensagem: 'Pedido ' + req.params.id + ' não foi apagado.'});
       });
 }

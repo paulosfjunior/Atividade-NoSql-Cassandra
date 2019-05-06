@@ -21,6 +21,8 @@
 
 ### O servidor estará sendo executada no caminho [localhost:8080](http://localhost:8080/).
 
+***Modelo de request para o server [Wiki](https://gitlab.com/paulosfjunior/atividade-nosql-cassandra/wikis/Rotas-e-formatos-para-Req-e-Res)***
+
 ### ***Cliente***
 
 > ``cd atividade-nosql-cassandra/frontend``
@@ -29,7 +31,7 @@
 
 > ``npm start``
 
-### O servidor estará sendo executada no caminho [localhost:8080](http://localhost:8080/).
+### O cliente estará sendo executada no caminho [localhost:3333](http://localhost:3333/).
 
 ---
 
