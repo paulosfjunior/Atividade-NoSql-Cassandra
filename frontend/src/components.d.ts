@@ -9,40 +9,63 @@ import '@stencil/core';
 
 import '@ionic/core';
 import 'ionicons';
+import {
+  Customer,
+  Item,
+} from './interfaces';
+import {
+  CartProvider,
+} from './global/defaultProvider';
 
 
 export namespace Components {
+
+  interface AppBuy {}
+  interface AppBuyAttributes extends StencilHTMLAttributes {}
 
   interface AppCadastroCustomer {
     'address': string;
     'email': string;
     'name': string;
+    'old': Customer;
     'open': boolean;
     'pass': string;
     'placeholders': any;
+    'rule': "admin" | "normal";
   }
   interface AppCadastroCustomerAttributes extends StencilHTMLAttributes {
     'address'?: string;
     'email'?: string;
     'name'?: string;
+    'old'?: Customer;
+    'onCreate'?: (event: CustomEvent) => void;
     'open'?: boolean;
     'pass'?: string;
     'placeholders'?: any;
+    'rule'?: "admin" | "normal";
   }
 
   interface AppCadastroItem {
     'desc': string;
     'name': string;
+    'old': Item;
     'open': boolean;
     'price': string;
   }
   interface AppCadastroItemAttributes extends StencilHTMLAttributes {
     'desc'?: string;
     'name'?: string;
-    'onCreateUser'?: (event: CustomEvent) => void;
+    'old'?: Item;
+    'onCreate'?: (event: CustomEvent) => void;
     'open'?: boolean;
     'price'?: string;
   }
+
+  interface AppCustomer {}
+  interface AppCustomerAttributes extends StencilHTMLAttributes {}
+
+  interface AppItem {}
+  interface AppItemAttributes extends StencilHTMLAttributes {}
 
   interface AppFab {}
   interface AppFabAttributes extends StencilHTMLAttributes {
@@ -50,10 +73,12 @@ export namespace Components {
   }
 
   interface AppHeader {
+    'isCart': boolean;
     'isHome': boolean;
     'name': string;
   }
   interface AppHeaderAttributes extends StencilHTMLAttributes {
+    'isCart'?: boolean;
     'isHome'?: boolean;
     'name'?: string;
   }
@@ -61,29 +86,58 @@ export namespace Components {
   interface AppHome {}
   interface AppHomeAttributes extends StencilHTMLAttributes {}
 
+  interface AppLogin {}
+  interface AppLoginAttributes extends StencilHTMLAttributes {}
+
+  interface AppOpenCartModal {
+    'cartProvider': CartProvider;
+    'open': any;
+  }
+  interface AppOpenCartModalAttributes extends StencilHTMLAttributes {
+    'cartProvider'?: CartProvider;
+    'onClose'?: (event: CustomEvent) => void;
+    'open'?: any;
+  }
+
   interface AppRoot {}
   interface AppRootAttributes extends StencilHTMLAttributes {}
 }
 
 declare global {
   interface StencilElementInterfaces {
+    'AppBuy': Components.AppBuy;
     'AppCadastroCustomer': Components.AppCadastroCustomer;
     'AppCadastroItem': Components.AppCadastroItem;
+    'AppCustomer': Components.AppCustomer;
+    'AppItem': Components.AppItem;
     'AppFab': Components.AppFab;
     'AppHeader': Components.AppHeader;
     'AppHome': Components.AppHome;
+    'AppLogin': Components.AppLogin;
+    'AppOpenCartModal': Components.AppOpenCartModal;
     'AppRoot': Components.AppRoot;
   }
 
   interface StencilIntrinsicElements {
+    'app-buy': Components.AppBuyAttributes;
     'app-cadastro-customer': Components.AppCadastroCustomerAttributes;
     'app-cadastro-item': Components.AppCadastroItemAttributes;
+    'app-customer': Components.AppCustomerAttributes;
+    'app-item': Components.AppItemAttributes;
     'app-fab': Components.AppFabAttributes;
     'app-header': Components.AppHeaderAttributes;
     'app-home': Components.AppHomeAttributes;
+    'app-login': Components.AppLoginAttributes;
+    'app-open-cart-modal': Components.AppOpenCartModalAttributes;
     'app-root': Components.AppRootAttributes;
   }
 
+
+  interface HTMLAppBuyElement extends Components.AppBuy, HTMLStencilElement {}
+  var HTMLAppBuyElement: {
+    prototype: HTMLAppBuyElement;
+    new (): HTMLAppBuyElement;
+  };
 
   interface HTMLAppCadastroCustomerElement extends Components.AppCadastroCustomer, HTMLStencilElement {}
   var HTMLAppCadastroCustomerElement: {
@@ -95,6 +149,18 @@ declare global {
   var HTMLAppCadastroItemElement: {
     prototype: HTMLAppCadastroItemElement;
     new (): HTMLAppCadastroItemElement;
+  };
+
+  interface HTMLAppCustomerElement extends Components.AppCustomer, HTMLStencilElement {}
+  var HTMLAppCustomerElement: {
+    prototype: HTMLAppCustomerElement;
+    new (): HTMLAppCustomerElement;
+  };
+
+  interface HTMLAppItemElement extends Components.AppItem, HTMLStencilElement {}
+  var HTMLAppItemElement: {
+    prototype: HTMLAppItemElement;
+    new (): HTMLAppItemElement;
   };
 
   interface HTMLAppFabElement extends Components.AppFab, HTMLStencilElement {}
@@ -115,6 +181,18 @@ declare global {
     new (): HTMLAppHomeElement;
   };
 
+  interface HTMLAppLoginElement extends Components.AppLogin, HTMLStencilElement {}
+  var HTMLAppLoginElement: {
+    prototype: HTMLAppLoginElement;
+    new (): HTMLAppLoginElement;
+  };
+
+  interface HTMLAppOpenCartModalElement extends Components.AppOpenCartModal, HTMLStencilElement {}
+  var HTMLAppOpenCartModalElement: {
+    prototype: HTMLAppOpenCartModalElement;
+    new (): HTMLAppOpenCartModalElement;
+  };
+
   interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
   var HTMLAppRootElement: {
     prototype: HTMLAppRootElement;
@@ -122,20 +200,30 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
+    'app-buy': HTMLAppBuyElement
     'app-cadastro-customer': HTMLAppCadastroCustomerElement
     'app-cadastro-item': HTMLAppCadastroItemElement
+    'app-customer': HTMLAppCustomerElement
+    'app-item': HTMLAppItemElement
     'app-fab': HTMLAppFabElement
     'app-header': HTMLAppHeaderElement
     'app-home': HTMLAppHomeElement
+    'app-login': HTMLAppLoginElement
+    'app-open-cart-modal': HTMLAppOpenCartModalElement
     'app-root': HTMLAppRootElement
   }
 
   interface ElementTagNameMap {
+    'app-buy': HTMLAppBuyElement;
     'app-cadastro-customer': HTMLAppCadastroCustomerElement;
     'app-cadastro-item': HTMLAppCadastroItemElement;
+    'app-customer': HTMLAppCustomerElement;
+    'app-item': HTMLAppItemElement;
     'app-fab': HTMLAppFabElement;
     'app-header': HTMLAppHeaderElement;
     'app-home': HTMLAppHomeElement;
+    'app-login': HTMLAppLoginElement;
+    'app-open-cart-modal': HTMLAppOpenCartModalElement;
     'app-root': HTMLAppRootElement;
   }
 
