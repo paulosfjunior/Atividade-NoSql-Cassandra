@@ -19,7 +19,8 @@ function getAll(req, res) {
       .then((resultado) => {
         res.json({
           tipo: 'sucesso',
-          mensagem: resultado});
+          mensagem: resultado
+        });
       })
       .catch((erro) => {
         res.status(400).json({

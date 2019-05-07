@@ -2,6 +2,7 @@ var Bluebird = require('bluebird');
 var uuid = require('uuid/v1');
 
 var cassandra = require('../services/db.service');
+const { hashPasswordWithSalt, hashPassword } = require('../auth/_auth');
 
 var servico = {}
 
@@ -12,7 +13,7 @@ servico.deletar = deletarRegistro
 servico.procurar = procurarRegistro
 servico.autenticar = autenticarUsuario
 
-module.exports = servico
+module.exports = servico;
 
 function keyspaceExiste() {
   return new Bluebird((resolve, reject) => {
@@ -47,7 +48,7 @@ function tabelaExiste() {
     tipoExiste()
       .then((r) => {
         let query = 'CREATE TABLE IF NOT EXISTS atividadenosql.usuario ' + 
-                    '(id uuid, usuario text, nome text, endereco endereco, email text, hash text, salt text, PRIMARY KEY(id))';
+                    '(id uuid, usuario text, nome text, endereco endereco, email text, cargo text, hash text, salt text, refresh_token text, PRIMARY KEY(id))';
     
         cassandra.execute(query, (e, r) => {
           if (e) reject(e);
@@ -64,12 +65,14 @@ function criarRegistro(p) {
       .then((r) => {
         let parametro = p;
         parametro.id = uuid();
-        parametro.hash = p.senha;
-        parametro.salt = '0'; // gerar salt para salvar no cadastro
+        const { hash, salt } = hashPassword(parametro.senha);
+        parametro.hash = hash;
+        parametro.salt = salt;
+        parametro.refresh_token = null;
 
         let query = 'INSERT INTO atividadenosql.usuario ' +
-                    '(id, usuario, nome, endereco, email, hash, salt, regra) VALUES ' +
-                    '(:id, :usuario, :nome, :endereco, :email, :hash, :salt, :regra)';
+                    '(id, usuario, nome, endereco, email, hash, salt, cargo, refresh_token) VALUES ' +
+                    '(:id, :usuario, :nome, :endereco, :email, :hash, :salt, :cargo, :refresh_token)';
 
         cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
           if (e) reject(e);
@@ -100,9 +103,6 @@ function editarRegistro(id, p) {
     tabelaExiste()
       .then((r) => {
         let parametro = p;
-        parametro.id = id;
-        parametro.hash = p.senha;
-        parametro.salt = '0'; // gerar salt para salvar no cadastro
 
         let query = 'UPDATE atividadenosql.usuario SET ' +
                     'usuario = :usuario, ' + 
@@ -111,7 +111,8 @@ function editarRegistro(id, p) {
                     'email = :email, ' + 
                     'hash = :hash, ' + 
                     'salt = :salt, ' +
-                    'regra = :regra ' +
+                    'cargo = :cargo, ' +
+                    'refresh_token = :refresh_token ' +
                     'WHERE id = :id';
     
         cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
@@ -149,10 +150,10 @@ function procurarRegistro(id) {
 
         let query = 'SELECT * FROM atividadenosql.usuario ' +
                     'WHERE id = :id';
-;
+
         cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
           if (e) reject(e);
-          if (r) resolve(r.rows);
+          if (r) resolve(r.rows[0]);
         });
       })
       .catch((e) => reject(e));
@@ -166,11 +167,11 @@ function autenticarUsuario(usuario) {
         let parametro = {usuario: usuario};
 
         let query = 'SELECT * FROM atividadenosql.usuario ' +
-                    'WHERE usuario = :usuario';
-;
+                    'WHERE usuario = :usuario ALLOW FILTERING';
+
         cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
           if (e) reject(e);
-          if (r) resolve(r.rows);
+          if (r) resolve(r.rows[0]);
         });
       })
       .catch((e) => reject(e));

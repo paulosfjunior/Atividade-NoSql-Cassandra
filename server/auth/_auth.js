@@ -24,16 +24,15 @@ function hashPassword(rawPassword) {
 }
 
 function genRefreshToken(user) {
-    return user._id.toString() + crypto.randomBytes(256)
-        .toString('hex')
+    return user.id.toString() + crypto.randomBytes(256).toString('hex');
 }
 
 function genAccessToken(user, jwtRefreshToken) {
     return jwt.sign({ 
-        id: user._id,
+        id: user.id,
         nome: user.nome,
         email: user.email,
-        tiposUsuario: user.tiposUsuario,
+        cargo: user.cargo,
         refreshToken: jwtRefreshToken
     }, process.env.JWT_SECRET, { expiresIn: '7d' });
 }

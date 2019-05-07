@@ -8,20 +8,31 @@ const ExtractJWT = passportJWT.ExtractJwt;
 const { hashPasswordWithSalt, hashPassword, genAccessToken } = require('./_auth');
 const cassandra = require('../cassandra');
 
+const usuarioServico = require('../services/usuario.service');
+
 passport.use('login', new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password',
+    usernameField: 'usuario',
+    passwordField: 'senha',
     passReqToCallback: true,
   },
-  async (req, email, password, next) => {
+  async (req, usuario, senha, next) => {
     try {
-/*      const inputData = req.body;
-      let user = await usuario.findOne({ email: email });
-      if (!user) return next(null, false, { message: 'Email não cadastrado.' });
-
-  		let hashedPassword = hashPasswordWithSalt(password, user.salt).hash;
-  		if (user.hash != hashedPassword) return next(null, false, { message: 'Senha incorreta.' });
-  		return next(null, user, { message: 'Sessão iniciada com sucesso.' });*/
+      usuarioServico.autenticar(req.body.usuario)
+          .then((user) => {
+            if (user) {
+              if (user.cargo == req.body.cargo &&
+                  user.hash == hashPasswordWithSalt(req.body.senha, user.salt).hash) {
+                return next(null, user, { message: 'Sessão iniciada com sucesso.' });
+              } else {
+                return next(null, false, { message: 'Senha incorreta.' });
+              }
+            } else {
+              return next(null, false, { mensagem: 'Usuário não encontrado.' });
+            }
+          })
+          .catch((erro) => {
+            return next(null, false, { mensagem: 'Erro interno' });
+          });
     } catch(err) {
       next(err);
     }
@@ -31,22 +42,65 @@ passport.use('login', new LocalStrategy({
 passport.use('jwt', new JWTStrategy({
     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.JWT_SECRET,
-    ignoreExpiration: true,
     passReqToCallback: true
   },
   async (req, jwtPayload, next) => {
     try {
-      let user = await usuario.findOne({ _id: jwtPayload.id, refreshTokens: jwtPayload.refreshToken });
-      if (!user) next(null, false, { message: 'Autenticação falhou.' });
+      usuarioServico.procurar(jwtPayload.id)
+          .then((user) => {
+            if (user) {
+              if (user.cargo === 'admin' || user.refresh_token === jwtPayload.refreshToken) 
+              {
+                  let accessToken = req.headers['authorization'].split(' ')[1];
+                  jwt.verify(accessToken, process.env.JWT_SECRET, (err, decoded) => {
+                    accessToken = genAccessToken(user, jwtPayload.refreshToken);
+                    return next(null, user, { refreshToken: jwtPayload.refreshToken, accessToken: accessToken });
+                  });                
+              } else {
+                return next(null, false, { message: 'Autenticação falhou.' });
+              }
+            } else {
+              return next(null, false, { message: 'Autenticação falhou.' });
+            }
+          })
+          .catch((erro) => {
+            return next(erro);
+          });
 
-      let accessToken = req.headers['authorization'].split(' ')[1];
-      jwt.verify(accessToken, process.env.JWT_SECRET, (err, decoded) => {
-        if (err == 'TokenExpiredError') {
-          accessToken = genAccessToken(user, jwtPayload.refreshToken);
-        }
-        return next(null, user, { refreshToken: jwtPayload.refreshToken, accessToken: accessToken });
-      });
-      
+    } catch(err) {
+      return next(err);
+    }
+
+  }
+));
+
+passport.use('adminJwt', new JWTStrategy({
+    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.JWT_SECRET,
+    passReqToCallback: true
+  },
+  async (req, jwtPayload, next) => {
+    try {
+      usuarioServico.procurarRegistro(jwtPayload.id)
+          .then((user) => {
+            if (user) {
+              if (user.cargo === 'admin') {
+                  let accessToken = req.headers['authorization'].split(' ')[1];
+                  jwt.verify(accessToken, process.env.JWT_SECRET, (err, decoded) => {
+                    accessToken = genAccessToken(user, jwtPayload.refreshToken);
+                    return next(null, user, { refreshToken: jwtPayload.refreshToken, accessToken: accessToken });
+                  });                
+              } else {
+                return next(null, false, { message: 'Autenticação falhou.' });
+              }
+            } else {
+              return next(null, false, { message: 'Autenticação falhou.' });
+            }
+          })
+          .catch((erro) => {
+            return next(err);
+          });
+
     } catch(err) {
       return next(err);
     }

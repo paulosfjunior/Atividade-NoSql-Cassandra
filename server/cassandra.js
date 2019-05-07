@@ -9,9 +9,6 @@ client.connect(async err => {
 	err
 		? console.log(err)
 		: console.log('Connected to Cassandra.')
-
-  const res = await cassandra.execute(``);
-  console.log(res)
 });
 
 module.exports = client;

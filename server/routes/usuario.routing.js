@@ -1,6 +1,8 @@
 const express = require('express');
+const passport = require('../auth/passport');
 
 const usuarioServico = require('../services/usuario.service');
+const { hashPasswordWithSalt, hashPassword, genAccessToken, genRefreshToken } = require('../auth/_auth');
 
 // carrengado express router
 const rotas = express.Router();
@@ -12,7 +14,8 @@ rotas.post('/', createRegister);
 rotas.put('/:id', updateRegister);
 rotas.delete('/:id', deleteRegister);
 rotas.post('/autenticar', authUser);
-
+rotas.post('/logout', passport.authenticate('jwt', { session: false }), logoutUser);
+ 
 module.exports = rotas;
 
 function getAll(req, res) {
@@ -63,9 +66,11 @@ function createRegister(req, res) {
         }
       })
       .catch((erro) => {
+        console.log(erro)
         res.status(400).json({
           tipo: 'erro',
-          mensagem: 'Usuário não cadastrado.'});
+          mensagem: 'Usuário não cadastrado.'
+        });
       });
 }
 
@@ -99,39 +104,62 @@ function deleteRegister(req, res) {
         } else {
           res.status(400).json({
             tipo: 'erro',
-            mensagem: 'Usuário não foi apagado.'});
+            mensagem: 'Usuário não foi apagado.'
+          });
         }
       })
       .catch((erro) => {
         res.status(400).json({
           tipo: 'erro',
-          mensagem: 'Usuário não foi apagado.'});
+          mensagem: 'Usuário não foi apagado.'
+        });
       });
 }
 
 function authUser(req, res) {
-  usuarioServico.autenticar(req.body.usuario)
-      .then((resultado) => {
-        if (resultado) {
-          // modificar para validar corretamente com hash e salt
-          if (resultado.hash == req.body.senha) {
-            res.json({
-              tipo: 'sucesso',
-              mensagem: true});
-          } else {
-            res.json({
-              tipo: 'sucesso',
-              mensagem: false});
-          }
+  passport.authenticate('login', { session: false }, (err, user, info) => {
+    if (!user) return res.status(422).json({ message: info.message });
+
+    req.login(user, { session: false }, async (err) => {
+      const refreshToken = genRefreshToken(user);
+      user.refresh_token = refreshToken;
+      usuarioServico.editar(user.id, user)
+          .then((resultado) => {
+            if (resultado) {
+              return res.status(200).json({
+                token: genAccessToken(user, refreshToken),
+                message: info.message 
+              });
+            } else {
+              return res.status(500).json({ message: 'Ocorreu um erro interno.' });
+            }
+          })
+          .catch((erro) => {
+            console.log(erro)
+            return res.status(500).json({ message: 'Ocorreu um erro interno.' });
+          });
+    });
+  })(req, res);
+}
+
+function logoutUser(req, res) {
+  usuarioServico.procurar(req.user.id)
+      .then((usuario) => {
+        if (usuario) {
+          usuario.refresh_token = null;
+          usuarioServico.editar(req.user.id, usuario)
+              .then((resultado) => {
+                if (resultado) {
+                  return res.status(200).json({ message: 'Sessão finalizada com sucesso.' });
+                } else {
+                  return res.status(500).json({ message: 'Ocorreu um erro interno.' });
+                }
+              })
         } else {
-          res.status(400).json({
-            tipo: 'erro',
-            mensagem: 'Usuário não encontrado.'});
+          return res.status(500).json({ message: 'Ocorreu um erro interno.' });
         }
       })
       .catch((erro) => {
-        res.status(400).json({
-          tipo: 'erro',
-          mensagem: 'Usuário não encontrado.'});
-      });
+        return res.status(500).json({ message: 'Ocorreu um erro interno.' });
+      }); 
 }
