@@ -12,21 +12,21 @@ export class AppHome {
   @State() itemsProvider = new ItemProvider()
   componentDidLoad() { }
 
-  
+
   render() {
     return [
       <app-header name="MERCADINHO DE TUDO" isHome={true}></app-header>,
       <ion-content padding>
         <app-fab></app-fab>
         <ion-list>
-          {this.cartsProvider.list().map(row=>{
+          {this.cartsProvider.list().map(row => {
             return [
-              <ion-card> 
+              <ion-card>
                 <ion-card-title>{row.customer.name}</ion-card-title>
-                {row.items.map(cartItem =>{
+                {row.items.map(cartItem => {
                   return <div><br></br><ion-item>{cartItem.name}<div class="cartItemPrice">{cartItem.price}</div></ion-item></div>
                 })}
-                
+
               </ion-card>
             ]
           }
