@@ -15,8 +15,8 @@ export abstract class DefaultItemProvider {
     public abstract insert(customer: Item): void;
     public abstract edit(newcustomer: Item, oldCustomer: Item): void;
     public abstract remove(customer: Item): void;
-        public request(method:DefaultRequstMethod,address:string,body:{any}){
-        DefaultRequest(method,address,body)
+    public request(method: DefaultRequstMethod, address: string, body: { any }) {
+        DefaultRequest(method, address, body)
     }
 }
 export abstract class DefaultCartProvider {
@@ -29,6 +29,9 @@ export abstract class DefaultCartProvider {
     public abstract newCart(): void;
     public abstract closeEnableCart(type: string): void;
     public abstract addItemToCart(item: Item): void;
+    public request(method: DefaultRequstMethod, address: string, body: { any }) {
+        DefaultRequest(method, address, body)
+    }
 }
 export async function DefaultRequest(method:DefaultRequstMethod,address:string,body:{any}){
     const token = TokenController.get();
