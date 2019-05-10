@@ -1,27 +1,64 @@
-import { DefaultCustomerProvider, DefaultItemProvider, DefaultCartProvider, DefaultRequest } from "./providerAbstract";
+import { DefaultCustomerProvider, DefaultItemProvider, DefaultCartProvider, DefaultRequest, DefaultRequestMethod } from "./providerAbstract";
 
-export class ItemProvider extends DefaultItemProvider {
-    list(){
-        DefaultRequest()
+const { GET, POST, PUT, DELETE } = DefaultRequestMethod;
+
+export class CustomerProvider extends DefaultCustomerProvider {
+	async list(){
+	    const res = await DefaultRequest(GET, '/usuarios/', {});
+	}
+    async insert(item) {
+		const res = await DefaultRequest(POST, '/usuarios/', item);    		
+    }
+    async edit(itemEdit) {
+		const res = await DefaultRequest(PUT, '/usuarios/', itemEdit);
+    }
+    async remove() {
+		const res = await DefaultRequest(DELETE, '/usuarios/', {});
+    }
+    async tryLogin(email, pass) {
+    	const res = await DefaultRequest(POST, '/usuarios/autenticar', { email, pass });
     }
 }
-export class CartProvider extends DefaultCartProvider {}
-export class CustomerProvider extends DefaultCustomerProvider {}
-
-const { getToken } = require('./Auth');
-const apiUrl = 'https://vistto-api.herokuapp.com';
-
-export async function makeRequest(method, url, data) {
-	const token = await getToken();
-	const httpOptions = {
-		headers: { 'Content-Type': 'application/json', 'Authorization': `bearer ${token}` },
-		credentials: 'include',
-		method: method,
-		body: JSON.stringify(data)
+export class ItemProvider extends DefaultItemProvider {
+    async list(){
+        const res = await DefaultRequest(GET, '/produtos/', {});
+    }
+    async insert(item) {
+		const res = await DefaultRequest(POST, '/produtos/', item);    		
+    }
+    async edit(itemEdit) {
+		const res = await DefaultRequest(PUT, '/produtos/', itemEdit);
+    }
+    async remove() {
+		const res = await DefaultRequest(DELETE, '/produtos/', {});
+    }
+}
+export class CartProvider extends DefaultCartProvider {
+	async list(){
+	    const res = await DefaultRequest(GET, '/pedidos/', {});
 	}
+    async insert(item) {
+		const res = await DefaultRequest(POST, '/pedidos/', item);    		
+    }
+    async edit(itemEdit) {
+		const res = await DefaultRequest(PUT, '/pedidos/', itemEdit);
+    }
+    async remove() {
+		const res = await DefaultRequest(DELETE, '/pedidos/', {});
+    }
+    async getCart() {
 
-	const res = await fetch(`${apiUrl}${url}`, httpOptions);
-	const resBody = await res.json();
-	if (!res.ok) throw resBody.message;
-	return resBody;
-};
+    }
+    async getEnableCart() {
+
+    }
+    async newCart() {
+
+    }
+    async closeEnableCart() {
+
+    }
+    async addItemToCart() {
+
+    }
+}
