@@ -6,7 +6,7 @@ export abstract class DefaultCustomerProvider {
     public abstract edit(newcustomer: Customer, oldCustomer: Customer): void;
     public abstract remove(customer: Customer): void;
     public abstract tryLogin(email: string, pass: string): Customer;
-    public request(method: DefaultRequestMethod, address: string, body: any) {
+    public request(method: DefaultRequestMethod, address: string, body: Object) {
         DefaultRequest(method, address, body)
     }
 }
@@ -15,7 +15,7 @@ export abstract class DefaultItemProvider {
     public abstract insert(customer: Item): void;
     public abstract edit(newcustomer: Item, oldCustomer: Item): void;
     public abstract remove(customer: Item): void;
-    public request(method: DefaultRequestMethod, address: string, body: any) {
+    public request(method: DefaultRequestMethod, address: string, body: Object) {
         DefaultRequest(method, address, body)
     }
 }
@@ -29,14 +29,14 @@ export abstract class DefaultCartProvider {
     public abstract newCart(): void;
     public abstract closeEnableCart(type: string): void;
     public abstract addItemToCart(item: Item): void;
-    public request(method: DefaultRequestMethod, address: string, body: any) {
+    public request(method: DefaultRequestMethod, address: string, body: Object) {
         DefaultRequest(method, address, body)
     }
 }
 
-const apiUrl = 'https://vistto-api.herokuapp.com';
+const apiUrl = '';
 
-export async function DefaultRequest(method: DefaultRequestMethod, address: string, body: { any }){
+export async function DefaultRequest(method: DefaultRequestMethod, address: string, body: Object ) {
     const token = TokenController.get();
     const res = await fetch(`${apiUrl}${address}`, {
         headers: { 'Content-Type': 'application/json', 'Authorization': `bearer ${token}` },
@@ -47,7 +47,7 @@ export async function DefaultRequest(method: DefaultRequestMethod, address: stri
     const resBody = await res.json();
 }
 
-export class TokenController{    
+export class TokenController {    
     static TokenKey: string =  "session_token";
     static get():string{
         return localStorage.getItem(this.TokenKey)
@@ -60,7 +60,7 @@ export class TokenController{
     }
 }
 
-export enum DefaultRequestMethod{
+export enum DefaultRequestMethod {
     GET="GET",
     POST="POST",
     PUT="PUT",

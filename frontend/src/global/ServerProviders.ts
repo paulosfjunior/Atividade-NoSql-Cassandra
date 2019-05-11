@@ -3,7 +3,7 @@ import { DefaultCustomerProvider, DefaultItemProvider, DefaultCartProvider, Defa
 const { GET, POST, PUT, DELETE } = DefaultRequestMethod;
 
 export class CustomerProvider extends DefaultCustomerProvider {
-	async list(){
+	async list() {
 	    const res = await DefaultRequest(GET, '/usuarios/', {});
 	}
     async insert(item) {
@@ -19,8 +19,9 @@ export class CustomerProvider extends DefaultCustomerProvider {
     	const res = await DefaultRequest(POST, '/usuarios/autenticar', { email, pass });
     }
 }
+
 export class ItemProvider extends DefaultItemProvider {
-    async list(){
+    async list() {
         const res = await DefaultRequest(GET, '/produtos/', {});
     }
     async insert(item) {
@@ -33,8 +34,9 @@ export class ItemProvider extends DefaultItemProvider {
 		const res = await DefaultRequest(DELETE, '/produtos/', {});
     }
 }
+
 export class CartProvider extends DefaultCartProvider {
-	async list(){
+	async list() {
 	    const res = await DefaultRequest(GET, '/pedidos/', {});
 	}
     async insert(item) {
