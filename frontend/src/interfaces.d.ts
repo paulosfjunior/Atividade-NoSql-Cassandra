@@ -3,7 +3,7 @@ export interface Customer{
     address:string;
     email:string;
     pass:string;
-    rule:"admin"|"normal"
+    role:"admin"|"normal"
 }
 export interface Item{
     name:string;

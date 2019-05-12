@@ -7,7 +7,7 @@ export abstract class DefaultCustomerProvider {
     public abstract remove(customer: Customer): void;
     public abstract tryLogin(email: string, pass: string): Customer;
     public request(method: DefaultRequestMethod, address: string, body: Object) {
-        DefaultRequest(method, address, body)
+        return DefaultRequest(method, address, body)
     }
 }
 export abstract class DefaultItemProvider {
@@ -16,7 +16,7 @@ export abstract class DefaultItemProvider {
     public abstract edit(newcustomer: Item, oldCustomer: Item): void;
     public abstract remove(customer: Item): void;
     public request(method: DefaultRequestMethod, address: string, body: Object) {
-        DefaultRequest(method, address, body)
+        return DefaultRequest(method, address, body)
     }
 }
 export abstract class DefaultCartProvider {
@@ -30,25 +30,29 @@ export abstract class DefaultCartProvider {
     public abstract closeEnableCart(type: string): void;
     public abstract addItemToCart(item: Item): void;
     public request(method: DefaultRequestMethod, address: string, body: Object) {
-        DefaultRequest(method, address, body)
+        return DefaultRequest(method, address, body)
     }
 }
 
-const apiUrl = '';
+const apiUrl = 'localhost:8080';
 
 export async function DefaultRequest(method: DefaultRequestMethod, address: string, body: Object ) {
-    const token = TokenController.get();
-    const res = await fetch(`${apiUrl}${address}`, {
-        headers: { 'Content-Type': 'application/json', 'Authorization': `bearer ${token}` },
-        credentials: 'include',
-        method: method,
-        body: JSON.stringify(body)
-    });
-    const resBody = await res.json();
+    try {
+        const token = TokenController.get();
+        const res = await fetch(`${apiUrl}${address}`, {
+            headers: { 'Content-Type': 'application/json', 'Authorization': `bearer ${token}` },
+            credentials: 'include',
+            method: method,
+            body: JSON.stringify(body)
+        });
+        return await res.json();
+    } catch(err) {
+        throw err;
+    }
 }
 
 export class TokenController {    
-    static TokenKey: string =  "session_token";
+    static TokenKey: string = "session_token";
     static get():string{
         return localStorage.getItem(this.TokenKey)
     }

@@ -1,6 +1,6 @@
 const express = require('express');
 
-const usuarioServico = require('../services/pedido.service');
+const pedidoService = require('../services/pedido.service');
 
 // carrengado express router
 const rotas = express.Router();
@@ -11,15 +11,18 @@ rotas.get('/:id', getById);
 rotas.post('/', createRegister);
 rotas.put('/:id', updateRegister);
 rotas.delete('/:id', deleteRegister);
+rotas.get('/meus', getOwn);
 
 module.exports = rotas;
 
 function getAll(req, res) {
-  usuarioServico.listar()
+  pedidoService.listar()
       .then((resultado) => {
         res.json({
           tipo: 'sucesso',
-          mensagem: resultado});
+          resultado,
+          mensagem: 'Lista carregada.'
+        });
       })
       .catch((erro) => {
         res.status(400).json({
@@ -29,12 +32,13 @@ function getAll(req, res) {
 }
 
 function getById(req, res) {
-  usuarioServico.procurar(req.params.id)
+  pedidoService.procurar(req.params.id)
       .then((resultado) => {
         if (resultado) {
           res.json({
             tipo: 'sucesso',
-            mensagem: resultado});
+            resultado,
+            mensagem: 'Pedido encontrado.'});
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -49,12 +53,15 @@ function getById(req, res) {
 }
 
 function createRegister(req, res) {
-  usuarioServico.criar(req.body)
+  pedidoService.criar(req.body)
       .then((resultado) => {
         if (resultado) {
-          res.status(200).json({
-            tipo: 'sucesso',
-            mensagem: 'Pedido cadastrado.'});
+          pedidoService.listar()
+          .then(novaLista => {
+            res.status(200).json({
+              tipo: 'sucesso',
+              mensagem: 'Pedido cadastrado.'});
+          })
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -69,12 +76,16 @@ function createRegister(req, res) {
 }
 
 function updateRegister(req, res) {
-  usuarioServico.editar(req.params.id, req.body)
+  pedidoService.editar(req.params.id, req.body)
       .then((resultado) => {
         if (resultado) {
-          res.status(200).json({
-            tipo: 'sucesso',
-            mensagem: 'Pedido ' + req.params.id + ' foi alterado.'});
+          pedidoService.listar()
+          .then(novaLista => {
+            res.status(200).json({
+              tipo: 'sucesso',
+              resultado: novaLista,
+              mensagem: 'Pedido ' + req.params.id + ' foi alterado.'});
+          })
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -89,12 +100,16 @@ function updateRegister(req, res) {
 }
 
 function deleteRegister(req, res) {
-  usuarioServico.deletar(req.params.id)
+  pedidoService.deletar(req.params.id)
       .then((resultado) => {
         if (resultado) {
-          res.status(200).json({
-            tipo: 'sucesso',
-            mensagem: 'Pedido ' + req.params.id + ' foi apagado.'});
+          pedidoService.listar()
+          .then(novaLista => {
+            res.status(200).json({
+              tipo: 'sucesso',
+              resultado: novaLista,
+              mensagem: 'Pedido ' + req.params.id + ' foi apagado.'});
+          })
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -106,4 +121,25 @@ function deleteRegister(req, res) {
           tipo: 'erro',
           mensagem: 'Pedido ' + req.params.id + ' não foi apagado.'});
       });
+}
+
+function getOwn(req, res) {
+  pedidoService.listarMeus(req.user.id)
+  .then(resultado => {
+      if (resultado) {
+        res.status(200).json({
+          tipo: 'sucesso',
+          resultado,
+          mensagem: 'Pedidos buscados.'});
+      } else {
+        res.status(400).json({
+          tipo: 'erro',
+          mensagem: 'Pedido não encontrados.'});
+      }
+    })
+    .catch((erro) => {
+      res.status(400).json({
+        tipo: 'erro',
+        mensagem: 'Pedido não encontrados.'});
+  });
 }

@@ -17,8 +17,9 @@ export class CustomerProvider extends DefaultCustomerProvider {
     }
     tryLogin(email: string, pass: string):Customer {
         return this.lista.find(item => { return item.email == email && item.pass == pass })
-    };
-};
+    }
+}
+
 export class ItemProvider extends DefaultItemProvider {
     private lista: Item[] = [{ name: "teste", desc: "teste item", price: "3.56" }]
     list(): Item[] {
@@ -35,6 +36,7 @@ export class ItemProvider extends DefaultItemProvider {
         this.lista = this.lista.filter(item => { if (!(item == customer)) { return item } })
     }
 }
+
 export class CartProvider extends DefaultCartProvider {
     private lista: Cart[] = [
         {   enable:false,

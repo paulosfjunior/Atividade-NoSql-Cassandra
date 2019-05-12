@@ -1,6 +1,6 @@
 const express = require('express');
 
-const usuarioServico = require('../services/produto.service');
+const produtoService = require('../services/produto.service');
 
 // carrengado express router
 const rotas = express.Router();
@@ -15,11 +15,12 @@ rotas.delete('/:id', deleteRegister);
 module.exports = rotas;
 
 function getAll(req, res) {
-  usuarioServico.listar()
+  produtoService.listar()
       .then((resultado) => {
         res.json({
           tipo: 'sucesso',
-          mensagem: resultado
+          resultado,
+          mensagem: 'Lista carregada.'
         });
       })
       .catch((erro) => {
@@ -30,12 +31,13 @@ function getAll(req, res) {
 }
 
 function getById(req, res) {
-  usuarioServico.procurar(req.params.id)
+  produtoService.procurar(req.params.id)
       .then((resultado) => {
         if (resultado) {
           res.json({
             tipo: 'sucesso',
-            mensagem: resultado});
+            resultado,
+            mensagem: 'Produto encontrado.'});
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -50,12 +52,15 @@ function getById(req, res) {
 }
 
 function createRegister(req, res) {
-  usuarioServico.criar(req.body)
+  produtoService.criar(req.body)
       .then((resultado) => {
         if (resultado) {
-          res.status(200).json({
-            tipo: 'sucesso',
-            mensagem: 'Produto ' + req.body.nome + ' foi cadastrado.'});
+          produtoService.listar()
+          .then(novaLista => {
+            res.status(200).json({
+              tipo: 'sucesso',
+              mensagem: 'Produto ' + req.body.nome + ' foi cadastrado.'});
+          })
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -70,12 +75,15 @@ function createRegister(req, res) {
 }
 
 function updateRegister(req, res) {
-  usuarioServico.editar(req.params.id, req.body)
+  produtoService.editar(req.params.id, req.body)
       .then((resultado) => {
         if (resultado) {
-          res.status(200).json({
-            tipo: 'sucesso',
-            mensagem: 'Produto ' + req.body.nome + ' foi alterado.'});
+          produtoService.listar()
+          .then(novaLista => {
+            res.status(200).json({
+              tipo: 'sucesso',
+              mensagem: 'Produto ' + req.body.nome + ' foi alterado.'});
+          })
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -90,12 +98,15 @@ function updateRegister(req, res) {
 }
 
 function deleteRegister(req, res) {
-  usuarioServico.deletar(req.params.id)
+  produtoService.deletar(req.params.id)
       .then((resultado) => {
         if (resultado) {
-          res.status(200).json({
-            tipo: 'sucesso',
-            mensagem: 'Produto ' + req.params.id + ' foi apagado.'});
+          produtoService.listar()
+          .then(novaLista => {
+            res.status(200).json({
+              tipo: 'sucesso',
+              mensagem: 'Produto ' + req.params.id + ' foi apagado.'});
+          })
         } else {
           res.status(400).json({
             tipo: 'erro',

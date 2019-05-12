@@ -7,6 +7,7 @@ var servico = {}
 
 servico.criar = criarRegistro
 servico.listar = listarRegistro
+servico.listarMeus = listarMeusRegistros
 servico.editar = editarRegistro
 servico.deletar = deletarRegistro
 servico.procurar = procurarRegistro
@@ -120,6 +121,25 @@ function listarRegistro() {
   })
 }
 
+function listarMeusRegistros(id) {
+  return new Bluebird((resolve, reject) => {
+    tabelaExiste()
+      .then((r) => {
+        let parametro = {
+          id: id
+        }
+
+        let query = 'SELECT * FROM atividadenosql.pedido WHERE cliente.id = :id ALLOW FILTERING';
+    
+        cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
+          if (e) reject(e);
+          if (r) resolve(r.rows);
+        });
+      })
+      .catch((e) => reject(e));
+  })
+}
+
 function editarRegistro(id, p) {
   return new Bluebird((resolve, reject) => {
     tabelaExiste()
@@ -181,7 +201,7 @@ function procurarRegistro(id) {
 
         let query = 'SELECT * FROM atividadenosql.pedido ' +
                     'WHERE id = :id AND status = :status';
-;
+
         cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
           if (e) reject(e);
           if (r) resolve(r.rows);

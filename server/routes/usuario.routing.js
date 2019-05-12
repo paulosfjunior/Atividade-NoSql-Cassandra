@@ -23,7 +23,8 @@ function getAll(req, res) {
       .then((resultado) => {
         res.json({
           tipo: 'sucesso',
-          mensagem: resultado});
+          resultado,
+          mensagem: 'Lista carregada.'});
       })
       .catch((erro) => {
         res.status(400).json({
@@ -38,7 +39,8 @@ function getById(req, res) {
         if (resultado) {
           res.json({
             tipo: 'sucesso',
-            mensagem: resultado});
+            resultado,
+            mensagem: 'Usuario encontrado.'});
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -56,9 +58,13 @@ function createRegister(req, res) {
   usuarioServico.criar(req.body)
       .then((resultado) => {
         if (resultado) {
-          res.status(200).json({
-            tipo: 'sucesso',
-            mensagem: 'Usuário ' + req.body.usuario + ' foi cadastrado.'});
+          usuarioServico.listar()
+          .then(novaLista => {
+            res.status(200).json({
+              tipo: 'sucesso',
+              resultado: novaLista,
+              mensagem: 'Usuário ' + req.body.usuario + ' foi cadastrado.'});
+          })
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -78,9 +84,13 @@ function updateRegister(req, res) {
   usuarioServico.editar(req.params.id, req.body)
       .then((resultado) => {
         if (resultado) {
-          res.status(200).json({
-            tipo: 'sucesso',
-            mensagem: 'Usuário ' + req.body.usuario + ' foi alterado.'});
+          usuarioServico.listar()
+          .then(novaLista => {
+            res.status(200).json({
+              tipo: 'sucesso',
+              resultado: novaLista,
+              mensagem: 'Usuário ' + req.body.usuario + ' foi alterado.'});
+          })
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -98,9 +108,13 @@ function deleteRegister(req, res) {
   usuarioServico.deletar(req.params.id)
       .then((resultado) => {
         if (resultado) {
-          res.status(200).json({
-            tipo: 'sucesso',
-            mensagem: 'Usuário ' + req.params.id + ' foi apagado.'});
+          usuarioServico.listar()
+          .then(novaLista => {
+            res.status(200).json({
+              tipo: 'sucesso',
+              resultado: novaLista,
+              mensagem: 'Usuário ' + req.params.id + ' foi apagado.'});
+          })
         } else {
           res.status(400).json({
             tipo: 'erro',
