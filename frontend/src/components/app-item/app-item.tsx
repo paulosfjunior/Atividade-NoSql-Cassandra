@@ -1,12 +1,12 @@
 import { Component, State, Element } from '@stencil/core';
-import { ItemProvider } from '../../global/MockProvider';
+import { ItemProvider } from '../../global/ServerProvider';
 import { Produto } from '../../interfaces';
 
 @Component({
   tag: 'app-item',
   styleUrl: 'app-cadastro.css'
 })
-export class AppCadastroCustomer {
+export class AppCadastroItem {
   @State() lista: Produto[];
   @State() provider = new ItemProvider();
   @State() update: number = 0
@@ -46,7 +46,7 @@ export class AppCadastroCustomer {
         })}
       </ion-list>
       <app-cadastro-item id="cad" onCreate={(e) => { this.provider.insert(e.detail.new); this.update++ }}></app-cadastro-item>
-      <app-cadastro-item id="edit" onCreate={(e) => { this.provider.edit(e.detail.new, e.detail.old); this.update++ }}></app-cadastro-item>
+      <app-cadastro-item id="edit" onCreate={(e) => { this.provider.edit(e.detail.new); this.update++ }}></app-cadastro-item>
     </div>]
   }
   openEditModal(row: Produto) {

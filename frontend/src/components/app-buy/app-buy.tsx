@@ -1,5 +1,5 @@
 import { Component, State, Element } from "@stencil/core";
-import { ItemProvider, CartProvider } from "../../global/MockProvider";
+import { ItemProvider, CartProvider } from "../../global/ServerProvider";
 import { Pedido, Produto } from "../../interfaces"
 
 @Component({

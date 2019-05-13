@@ -16,7 +16,7 @@ import {
 } from './interfaces';
 import {
   CartProvider,
-} from './global/MockProvider';
+} from './global/ServerProvider';
 
 
 export namespace Components {
@@ -32,7 +32,7 @@ export namespace Components {
     'open': boolean;
     'pass': string;
     'placeholders': any;
-    'rule': "admin" | "normal";
+    'rule': "Adiministrador" | "Usuario";
     'user': string;
   }
   interface AppCadastroCustomerAttributes extends StencilHTMLAttributes {
@@ -44,7 +44,7 @@ export namespace Components {
     'open'?: boolean;
     'pass'?: string;
     'placeholders'?: any;
-    'rule'?: "admin" | "normal";
+    'rule'?: "Adiministrador" | "Usuario";
     'user'?: string;
   }
 
@@ -59,7 +59,7 @@ export namespace Components {
     'desc'?: string;
     'name'?: string;
     'old'?: Produto;
-    'onCreate'?: (event: CustomEvent<{new:Produto,old:Produto}>) => void;
+    'onCreate'?: (event: CustomEvent<{ new: Produto, old: Produto }>) => void;
     'open'?: boolean;
     'price'?: number;
   }
@@ -130,7 +130,7 @@ declare global {
     'app-header': Components.AppHeaderAttributes;
     'app-home': Components.AppHomeAttributes;
     'app-item': Components.AppItemAttributes;
-    'app-Login': Components.AppLoginAttributes;
+    'app-login': Components.AppLoginAttributes;
     'app-open-cart-modal': Components.AppOpenCartModalAttributes;
     'app-root': Components.AppRootAttributes;
   }
@@ -211,7 +211,7 @@ declare global {
     'app-header': HTMLAppHeaderElement
     'app-home': HTMLAppHomeElement
     'app-item': HTMLAppItemElement
-    'app-Login': HTMLAppLoginElement
+    'app-login': HTMLAppLoginElement
     'app-open-cart-modal': HTMLAppOpenCartModalElement
     'app-root': HTMLAppRootElement
   }
@@ -225,7 +225,7 @@ declare global {
     'app-header': HTMLAppHeaderElement;
     'app-home': HTMLAppHomeElement;
     'app-item': HTMLAppItemElement;
-    'app-Login': HTMLAppLoginElement;
+    'app-login': HTMLAppLoginElement;
     'app-open-cart-modal': HTMLAppOpenCartModalElement;
     'app-root': HTMLAppRootElement;
   }

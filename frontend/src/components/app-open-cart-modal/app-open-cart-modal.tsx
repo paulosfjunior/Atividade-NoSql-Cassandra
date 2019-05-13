@@ -1,5 +1,5 @@
 import { Component, Prop, Element, Event, EventEmitter, Listen } from "@stencil/core";
-import { CartProvider } from "../../global/MockProvider";
+import { CartProvider } from "../../global/ServerProvider";
 
 @Component({
     tag: "app-open-cart-modal",

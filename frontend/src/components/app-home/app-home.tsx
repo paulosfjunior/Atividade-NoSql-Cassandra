@@ -1,6 +1,6 @@
 import { Component, Element, State } from '@stencil/core';
 import "@ionic/core"
-import { ItemProvider, CartProvider } from '../../global/MockProvider';
+import { ItemProvider, CartProvider } from '../../global/ServerProvider';
 import { Pedido, Produto } from '../../interfaces';
 
 @Component({
@@ -37,7 +37,7 @@ export class AppHome {
           {this.cartList.map(row => {
             return [
               <ion-card>
-                <ion-card-title>{row.clente.nome}</ion-card-title>
+                <ion-card-title>{row.cliente.nome}</ion-card-title>
                 {row.carrinho.map(cartItem => {
                   return <div><br></br><ion-item>{cartItem.produto}<div class="cartItemPrice">{cartItem.valor_unitario}</div></ion-item></div>
                 })}

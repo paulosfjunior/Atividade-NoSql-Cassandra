@@ -1,4 +1,4 @@
-import { Component, Prop, EventEmitter, Event } from '@stencil/core';
+import { Component, Prop, EventEmitter, Event, Watch } from '@stencil/core';
 import { Produto } from '../../interfaces';
 
 @Component({
@@ -11,9 +11,14 @@ export class AppCadastroItem {
   @Prop({ mutable: true }) desc: string;
   @Prop({ mutable: true }) price: number;
   @Prop({ mutable: true }) open: boolean = false;
-  @Event() create: EventEmitter<{new:Produto,old:Produto}>;
+  @Event() create: EventEmitter<{ new: Produto, old: Produto }>;
 
-
+  @Watch("old")
+  handler(nv: Produto) {
+    this.desc = nv.descricao
+    this.name = nv.nome
+    this.price = nv.preco
+  }
   render() {
     return [
       <div style={{ "display": this.open ? "block" : "none" }} id="myModal" class="modal">
@@ -36,7 +41,7 @@ export class AppCadastroItem {
             </ion-item>
             <br></br>
             <br></br>
-            <ion-button expand="full" onClick={() => { this.create.emit({new:{preco:this.price,descricao:this.desc,nome:this.name},old:this.old});this.open = false }}>Cadastrar</ion-button>
+            <ion-button expand="full" onClick={() => { this.create.emit({ new: { id:this.old?this.old.id:null,preco: this.price, descricao: this.desc, nome: this.name }, old: this.old });this.open = false }}>Cadastrar</ion-button>
           </div>
         </div>
       </div>

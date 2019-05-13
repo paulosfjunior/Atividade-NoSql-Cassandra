@@ -1,4 +1,4 @@
-import { Component, Prop, Event, EventEmitter } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter, Watch } from '@stencil/core';
 import { Cliente, Endereco } from '../../interfaces';
 
 
@@ -15,11 +15,19 @@ export class AppCadastroCustomer {
     @Prop({ mutable: true }) email: string;
     @Prop({ mutable: true }) pass: string;
     @Prop({ mutable: true }) open: boolean = false;
-    @Prop({ mutable: true }) rule: "admin" | "normal"
+    @Prop({ mutable: true }) rule: "Adiministrador" | "Usuario"
 
     @Event() create: EventEmitter<{ new: Cliente, old: Cliente }>;
     constructor() {
     }
+    @Watch("old") 
+    handler(nv:Cliente){
+        this.name = nv.nome
+        this.user = nv.usuario
+        this.endereco = nv.endereco
+        this.email = nv.email
+    }
+    
     render() {
         return [
             <div style={{ "display": this.open ? "block" : "none" }} id="myModal" class="modal">
@@ -43,7 +51,7 @@ export class AppCadastroCustomer {
                             <ion-item>
                                 <ion-input type="text" value={this.email} onInput={(e: any) => { this.email = e.target.value }} placeholder="Email do Cliente..."></ion-input>
                                 <ion-input type="text" value={this.user} onInput={(e: any) => { this.user = e.target.value }} placeholder="Login do Cliente..."></ion-input>
-                                <ion-input type="text" value={this.pass} onInput={(e: any) => { this.pass = e.target.value }} placeholder="Senha do Cliente..."></ion-input>
+                                {!this.old? <ion-input type="text" value={this.pass} onInput={(e: any) => { this.pass = e.target.value }} placeholder="Senha do Cliente..."></ion-input>:""}
                             </ion-item>
                             <ion-list>
                                 <ion-radio-group>
@@ -53,19 +61,19 @@ export class AppCadastroCustomer {
 
                                     <ion-item>
                                         <ion-label>Administrador</ion-label>
-                                        <ion-radio onClick={(e: any) => { this.rule = e.target.value }} slot="start" value="admin"></ion-radio>
+                                        <ion-radio onClick={(e: any) => { this.rule = e.target.value }} slot="start" value="Administrador"></ion-radio>
                                     </ion-item>
 
                                     <ion-item>
                                         <ion-label>Normal</ion-label>
-                                        <ion-radio onClick={(e: any) => { this.rule = e.target.value }} slot="start" value="normal"></ion-radio>
+                                        <ion-radio onClick={(e: any) => { this.rule = e.target.value }} slot="start" value="Usuario"></ion-radio>
                                     </ion-item>
                                 </ion-radio-group>
                             </ion-list>
                             <br></br>
                             <br></br>
                         </ion-item-group>
-                        <ion-button onClick={() => { this.create.emit({ new: { endereco: this.endereco, email: this.email, nome: this.name, salt: this.pass, cargo: this.rule, usuario: this.user, hash: null }, old: this.old }); this.open = false }} expand="full">{this.old ? "Editar" : "Cadastrar"}</ion-button>
+                        <ion-button onClick={() => { this.create.emit({ new: {id:this.old?this.old.id:null, endereco: this.endereco, email: this.email, nome: this.name, salt: this.pass, cargo: this.rule, usuario: this.user, hash: null,senha:this.pass }, old: this.old }); this.open = false }} expand="full">{this.old ? "Editar" : "Cadastrar"}</ion-button>
                     </div>
                 </div>
 
