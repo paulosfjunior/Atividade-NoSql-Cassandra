@@ -48,17 +48,12 @@ passport.use('jwt', new JWTStrategy({
     try {
       usuarioServico.procurar(jwtPayload.id)
           .then((user) => {
-            if (user) {
-              if (user.cargo === 'admin' || user.refresh_token === jwtPayload.refreshToken) 
-              {
-                  let accessToken = req.headers['authorization'].split(' ')[1];
-                  jwt.verify(accessToken, process.env.JWT_SECRET, (err, decoded) => {
-                    accessToken = genAccessToken(user, jwtPayload.refreshToken);
-                    return next(null, user, { refreshToken: jwtPayload.refreshToken, accessToken: accessToken });
-                  });                
-              } else {
-                return next(null, false, { message: 'Autenticação falhou.' });
-              }
+            if (user && (user.cargo === 'admin' || user.refresh_token === jwtPayload.refreshToken)) {
+              let accessToken = req.headers['authorization'].split(' ')[1];
+              jwt.verify(accessToken, process.env.JWT_SECRET, (err, decoded) => {
+                accessToken = genAccessToken(user, jwtPayload.refreshToken);
+                return next(null, user, { refreshToken: jwtPayload.refreshToken, accessToken: accessToken });
+              }); 
             } else {
               return next(null, false, { message: 'Autenticação falhou.' });
             }
@@ -83,16 +78,12 @@ passport.use('adminJwt', new JWTStrategy({
     try {
       usuarioServico.procurarRegistro(jwtPayload.id)
           .then((user) => {
-            if (user) {
-              if (user.cargo === 'admin') {
-                  let accessToken = req.headers['authorization'].split(' ')[1];
-                  jwt.verify(accessToken, process.env.JWT_SECRET, (err, decoded) => {
-                    accessToken = genAccessToken(user, jwtPayload.refreshToken);
-                    return next(null, user, { refreshToken: jwtPayload.refreshToken, accessToken: accessToken });
-                  });                
-              } else {
-                return next(null, false, { message: 'Autenticação falhou.' });
-              }
+            if (user && user.cargo === 'admin') {
+              let accessToken = req.headers['authorization'].split(' ')[1];
+              jwt.verify(accessToken, process.env.JWT_SECRET, (err, decoded) => {
+                accessToken = genAccessToken(user, jwtPayload.refreshToken);
+                return next(null, user, { refreshToken: jwtPayload.refreshToken, accessToken: accessToken });
+              });
             } else {
               return next(null, false, { message: 'Autenticação falhou.' });
             }

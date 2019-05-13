@@ -8,9 +8,9 @@ const rotas = express.Router();
 // carregar rotas
 rotas.get('/', getAll);
 rotas.get('/:id', getById);
-rotas.post('/', createRegister);
-rotas.put('/:id', updateRegister);
-rotas.delete('/:id', deleteRegister);
+rotas.post('/', passport.authenticate('adminJwt', { session: false }), createRegister);
+rotas.put('/:id', passport.authenticate('adminJwt', { session: false }), updateRegister);
+rotas.delete('/:id', passport.authenticate('adminJwt', { session: false }), deleteRegister);
 
 module.exports = rotas;
 

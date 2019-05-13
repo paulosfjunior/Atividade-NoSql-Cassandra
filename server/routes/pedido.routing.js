@@ -78,7 +78,7 @@ function createRegister(req, res) {
 function updateRegister(req, res) {
   pedidoService.editar(req.params.id, req.body)
       .then((resultado) => {
-        if (resultado) {
+        if (resultado && (req.user.cargo === 'Admin' || req.user.id === req.params.id)) {
           pedidoService.listar()
           .then(novaLista => {
             res.status(200).json({
@@ -102,7 +102,7 @@ function updateRegister(req, res) {
 function deleteRegister(req, res) {
   pedidoService.deletar(req.params.id)
       .then((resultado) => {
-        if (resultado) {
+        if (resultado && (req.user.cargo === 'Admin' || req.user.id === req.params.id)) {
           pedidoService.listar()
           .then(novaLista => {
             res.status(200).json({
