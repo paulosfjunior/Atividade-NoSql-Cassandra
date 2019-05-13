@@ -30,8 +30,10 @@ function genRefreshToken(user) {
 function genAccessToken(user, jwtRefreshToken) {
     return jwt.sign({ 
         id: user.id,
+        usuario: user.usuario,
         nome: user.nome,
         email: user.email,
+        endereco: user.endereco,
         cargo: user.cargo,
         refreshToken: jwtRefreshToken
     }, process.env.JWT_SECRET, { expiresIn: '7d' });

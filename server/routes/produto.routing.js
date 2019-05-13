@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('../auth/passport');
 
 const produtoService = require('../services/produto.service');
 
@@ -6,11 +7,11 @@ const produtoService = require('../services/produto.service');
 const rotas = express.Router();
 
 // carregar rotas
-rotas.get('/', getAll);
-rotas.get('/:id', getById);
-rotas.post('/', passport.authenticate('adminJwt', { session: false }), createRegister);
-rotas.put('/:id', passport.authenticate('adminJwt', { session: false }), updateRegister);
-rotas.delete('/:id', passport.authenticate('adminJwt', { session: false }), deleteRegister);
+rotas.get('/', passport.authenticate('jwt', { session: false }), getAll);
+rotas.get('/:id', passport.authenticate('jwt', { session: false }), getById);
+rotas.post('/', passport.authenticate('adminJwt', { session: false }), createRegister, getAll);
+rotas.put('/:id', passport.authenticate('adminJwt', { session: false }), updateRegister, getAll);
+rotas.delete('/:id', passport.authenticate('adminJwt', { session: false }), deleteRegister, getAll);
 
 module.exports = rotas;
 
@@ -37,7 +38,8 @@ function getById(req, res) {
           res.json({
             tipo: 'sucesso',
             resultado,
-            mensagem: 'Produto encontrado.'});
+            mensagem: 'Produto encontrado.'
+          });
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -51,16 +53,11 @@ function getById(req, res) {
       });
 }
 
-function createRegister(req, res) {
+function createRegister(req, res, next) {
   produtoService.criar(req.body)
       .then((resultado) => {
         if (resultado) {
-          produtoService.listar()
-          .then(novaLista => {
-            res.status(200).json({
-              tipo: 'sucesso',
-              mensagem: 'Produto ' + req.body.nome + ' foi cadastrado.'});
-          })
+          next();
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -74,39 +71,31 @@ function createRegister(req, res) {
       });
 }
 
-function updateRegister(req, res) {
+function updateRegister(req, res, next) {
   produtoService.editar(req.params.id, req.body)
       .then((resultado) => {
         if (resultado) {
-          produtoService.listar()
-          .then(novaLista => {
-            res.status(200).json({
-              tipo: 'sucesso',
-              mensagem: 'Produto ' + req.body.nome + ' foi alterado.'});
-          })
+          next();
         } else {
           res.status(400).json({
             tipo: 'erro',
-            mensagem: 'Produto não foi alterado.'});
+            mensagem: 'Produto não foi alterado.'
+          });
         }
       })
       .catch((erro) => {
         res.status(400).json({
           tipo: 'erro',
-          mensagem: 'Produto não foi alterado.'});
+          mensagem: 'Produto não foi alterado.'
+        });
       });
 }
 
-function deleteRegister(req, res) {
+function deleteRegister(req, res, next) {
   produtoService.deletar(req.params.id)
       .then((resultado) => {
         if (resultado) {
-          produtoService.listar()
-          .then(novaLista => {
-            res.status(200).json({
-              tipo: 'sucesso',
-              mensagem: 'Produto ' + req.params.id + ' foi apagado.'});
-          })
+          next();
         } else {
           res.status(400).json({
             tipo: 'erro',

@@ -102,25 +102,31 @@ function editarRegistro(id, p) {
   return new Bluebird((resolve, reject) => {
     tabelaExiste()
       .then((r) => {
-        let parametro = p;
+        procurarRegistro(id).then(res => {
+          let parametro = p;
+          parametro.hash = res.hash;
+          parametro.salt = res.salt;
+          parametro.cargo = res.cargo;
+          parametro.refresh_token = res.refresh_token;
 
-        let query = 'UPDATE atividadenosql.usuario SET ' +
-                    'usuario = :usuario, ' + 
-                    'nome = :nome, ' + 
-                    'endereco = :endereco, ' + 
-                    'email = :email, ' + 
-                    'hash = :hash, ' + 
-                    'salt = :salt, ' +
-                    'cargo = :cargo, ' +
-                    'refresh_token = :refresh_token ' +
-                    'WHERE id = :id';
-    
-        cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
-          if (e) reject(e);
-          if (r) resolve(r);
-        });
-      })
-      .catch((e) => reject(e));
+          let query = 'UPDATE atividadenosql.usuario SET ' +
+                      'usuario = :usuario, ' + 
+                      'nome = :nome, ' + 
+                      'endereco = :endereco, ' + 
+                      'email = :email, ' + 
+                      'hash = :hash, ' + 
+                      'salt = :salt, ' +
+                      'cargo = :cargo, ' +
+                      'refresh_token = :refresh_token ' +
+                      'WHERE id = :id';
+      
+          cassandra.execute(query, parametro, {prepare: true}, (e, r) => {
+            if (e) reject(e);
+            if (r) resolve(r);
+          });
+        })
+        .catch((e) => reject(e));
+        })
   })
 }
 

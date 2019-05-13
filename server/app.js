@@ -12,7 +12,7 @@ const app = express();
 
 const routes = require('./routes/routes');
 
-const corsOptions = ['http://localhost:4200'];
+const whitelist = ['http://localhost:4200', '10.64.206.158', 'http://localhost:3333', 'http://10.64.206.158:3333'];
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -21,18 +21,17 @@ app.use(cookieParser());
 app.use(serveStatic(path.join(__dirname, 'public')));
 app.use(serveFavicon(path.join(__dirname, '/public/images/favicon.ico')));
 
-app.use(cors());
-// app.use(cors({
-//   origin: (origin, callback) => {
-//     if (corsOptions.indexOf(origin) === -1) {
-//       const msg = 'A política de acesso não permite o acesso ' +
-//                   'a partir da origem especificada.';
-//       return callback(new Error(msg), false);
-//     }
-//     return callback(null, true);
-//   },
-//   optionsSuccessStatus: 200,
-// }));
+/*app.use(cors());*/
+app.use(cors({
+  origin: function (origin, callback) {
+    console.log(origin)
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}));
 
 app.use('/', routes);
 

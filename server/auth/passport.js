@@ -20,8 +20,7 @@ passport.use('login', new LocalStrategy({
       usuarioServico.autenticar(req.body.usuario)
           .then((user) => {
             if (user) {
-              if (user.cargo == req.body.cargo &&
-                  user.hash == hashPasswordWithSalt(req.body.senha, user.salt).hash) {
+              if (user.hash == hashPasswordWithSalt(req.body.senha, user.salt).hash) {
                 return next(null, user, { message: 'Sessão iniciada com sucesso.' });
               } else {
                 return next(null, false, { message: 'Senha incorreta.' });
@@ -48,7 +47,7 @@ passport.use('jwt', new JWTStrategy({
     try {
       usuarioServico.procurar(jwtPayload.id)
           .then((user) => {
-            if (user && (user.cargo === 'admin' || user.refresh_token === jwtPayload.refreshToken)) {
+            if (user && (user.cargo === 'Administrador' || user.refresh_token === jwtPayload.refreshToken)) {
               let accessToken = req.headers['authorization'].split(' ')[1];
               jwt.verify(accessToken, process.env.JWT_SECRET, (err, decoded) => {
                 accessToken = genAccessToken(user, jwtPayload.refreshToken);
@@ -76,9 +75,9 @@ passport.use('adminJwt', new JWTStrategy({
   },
   async (req, jwtPayload, next) => {
     try {
-      usuarioServico.procurarRegistro(jwtPayload.id)
+      usuarioServico.procurar(jwtPayload.id)
           .then((user) => {
-            if (user && user.cargo === 'admin') {
+            if (user && user.cargo === 'Administrador') {
               let accessToken = req.headers['authorization'].split(' ')[1];
               jwt.verify(accessToken, process.env.JWT_SECRET, (err, decoded) => {
                 accessToken = genAccessToken(user, jwtPayload.refreshToken);

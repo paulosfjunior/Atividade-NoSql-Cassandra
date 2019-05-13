@@ -10,11 +10,11 @@ const rotas = express.Router();
 // carregar rotas
 rotas.get('/', getAll);
 rotas.get('/:id', getById);
-rotas.post('/', createRegister);
-rotas.put('/:id', updateRegister);
-rotas.delete('/:id', deleteRegister);
+rotas.post('/', createRegister, getAll);
+rotas.put('/:id', updateRegister, getAll);
+rotas.delete('/:id', deleteRegister, getAll);
 rotas.post('/autenticar', authUser);
-rotas.post('/logout', passport.authenticate('jwt', { session: false }), logoutUser);
+rotas.post('/logout', logoutUser);
  
 module.exports = rotas;
 
@@ -54,17 +54,11 @@ function getById(req, res) {
       });
 }
 
-function createRegister(req, res) {
+function createRegister(req, res, next) {
   usuarioServico.criar(req.body)
       .then((resultado) => {
         if (resultado) {
-          usuarioServico.listar()
-          .then(novaLista => {
-            res.status(200).json({
-              tipo: 'sucesso',
-              resultado: novaLista,
-              mensagem: 'Usuário ' + req.body.usuario + ' foi cadastrado.'});
-          })
+          next();
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -80,17 +74,12 @@ function createRegister(req, res) {
       });
 }
 
-function updateRegister(req, res) {
+function updateRegister(req, res, next) {
   usuarioServico.editar(req.params.id, req.body)
       .then((resultado) => {
-        if (resultado && (req.user.cargo === 'Admin' || req.user.id === req.params.id)) {
-          usuarioServico.listar()
-          .then(novaLista => {
-            res.status(200).json({
-              tipo: 'sucesso',
-              resultado: novaLista,
-              mensagem: 'Usuário ' + req.body.usuario + ' foi alterado.'});
-          })
+        console.log(req.user)
+        if (resultado && (req.user.cargo === 'Administrador' || req.user.id === req.params.id)) {
+          next();
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -98,23 +87,18 @@ function updateRegister(req, res) {
         }
       })
       .catch((erro) => {
+        console.log(erro)
         res.status(400).json({
           tipo: 'erro',
           mensagem: 'Usuário não foi alterado.'});
       });
 }
 
-function deleteRegister(req, res) {
+function deleteRegister(req, res, next) {
   usuarioServico.deletar(req.params.id)
       .then((resultado) => {
-        if (resultado && (req.user.cargo === 'Admin' || req.user.id === req.params.id)) {
-          usuarioServico.listar()
-          .then(novaLista => {
-            res.status(200).json({
-              tipo: 'sucesso',
-              resultado: novaLista,
-              mensagem: 'Usuário ' + req.params.id + ' foi apagado.'});
-          })
+        if (resultado && (req.user.cargo === 'Administrador' || req.user.id === req.params.id)) {
+          next();
         } else {
           res.status(400).json({
             tipo: 'erro',
