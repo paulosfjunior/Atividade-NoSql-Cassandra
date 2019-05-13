@@ -10,12 +10,13 @@ import '@stencil/core';
 import '@ionic/core';
 import 'ionicons';
 import {
-  Customer,
-  Item,
+  Cliente,
+  Endereco,
+  Produto,
 } from './interfaces';
 import {
   CartProvider,
-} from './global/defaultProvider';
+} from './global/MockProvider';
 
 
 export namespace Components {
@@ -24,48 +25,47 @@ export namespace Components {
   interface AppBuyAttributes extends StencilHTMLAttributes {}
 
   interface AppCadastroCustomer {
-    'address': string;
     'email': string;
+    'endereco': Endereco;
     'name': string;
-    'old': Customer;
+    'old': Cliente;
     'open': boolean;
     'pass': string;
     'placeholders': any;
     'rule': "admin" | "normal";
+    'user': string;
   }
   interface AppCadastroCustomerAttributes extends StencilHTMLAttributes {
-    'address'?: string;
     'email'?: string;
+    'endereco'?: Endereco;
     'name'?: string;
-    'old'?: Customer;
-    'onCreate'?: (event: CustomEvent) => void;
+    'old'?: Cliente;
+    'onCreate'?: (event: CustomEvent<{ new: Cliente, old: Cliente }>) => void;
     'open'?: boolean;
     'pass'?: string;
     'placeholders'?: any;
     'rule'?: "admin" | "normal";
+    'user'?: string;
   }
 
   interface AppCadastroItem {
     'desc': string;
     'name': string;
-    'old': Item;
+    'old': Produto;
     'open': boolean;
-    'price': string;
+    'price': number;
   }
   interface AppCadastroItemAttributes extends StencilHTMLAttributes {
     'desc'?: string;
     'name'?: string;
-    'old'?: Item;
-    'onCreate'?: (event: CustomEvent) => void;
+    'old'?: Produto;
+    'onCreate'?: (event: CustomEvent<{new:Produto,old:Produto}>) => void;
     'open'?: boolean;
-    'price'?: string;
+    'price'?: number;
   }
 
   interface AppCustomer {}
   interface AppCustomerAttributes extends StencilHTMLAttributes {}
-
-  interface AppItem {}
-  interface AppItemAttributes extends StencilHTMLAttributes {}
 
   interface AppFab {}
   interface AppFabAttributes extends StencilHTMLAttributes {
@@ -86,17 +86,20 @@ export namespace Components {
   interface AppHome {}
   interface AppHomeAttributes extends StencilHTMLAttributes {}
 
+  interface AppItem {}
+  interface AppItemAttributes extends StencilHTMLAttributes {}
+
   interface AppLogin {}
   interface AppLoginAttributes extends StencilHTMLAttributes {}
 
   interface AppOpenCartModal {
     'cartProvider': CartProvider;
-    'open': any;
+    'open': boolean;
   }
   interface AppOpenCartModalAttributes extends StencilHTMLAttributes {
     'cartProvider'?: CartProvider;
     'onClose'?: (event: CustomEvent) => void;
-    'open'?: any;
+    'open'?: boolean;
   }
 
   interface AppRoot {}
@@ -109,10 +112,10 @@ declare global {
     'AppCadastroCustomer': Components.AppCadastroCustomer;
     'AppCadastroItem': Components.AppCadastroItem;
     'AppCustomer': Components.AppCustomer;
-    'AppItem': Components.AppItem;
     'AppFab': Components.AppFab;
     'AppHeader': Components.AppHeader;
     'AppHome': Components.AppHome;
+    'AppItem': Components.AppItem;
     'AppLogin': Components.AppLogin;
     'AppOpenCartModal': Components.AppOpenCartModal;
     'AppRoot': Components.AppRoot;
@@ -123,10 +126,10 @@ declare global {
     'app-cadastro-customer': Components.AppCadastroCustomerAttributes;
     'app-cadastro-item': Components.AppCadastroItemAttributes;
     'app-customer': Components.AppCustomerAttributes;
-    'app-item': Components.AppItemAttributes;
     'app-fab': Components.AppFabAttributes;
     'app-header': Components.AppHeaderAttributes;
     'app-home': Components.AppHomeAttributes;
+    'app-item': Components.AppItemAttributes;
     'app-Login': Components.AppLoginAttributes;
     'app-open-cart-modal': Components.AppOpenCartModalAttributes;
     'app-root': Components.AppRootAttributes;
@@ -157,12 +160,6 @@ declare global {
     new (): HTMLAppCustomerElement;
   };
 
-  interface HTMLAppItemElement extends Components.AppItem, HTMLStencilElement {}
-  var HTMLAppItemElement: {
-    prototype: HTMLAppItemElement;
-    new (): HTMLAppItemElement;
-  };
-
   interface HTMLAppFabElement extends Components.AppFab, HTMLStencilElement {}
   var HTMLAppFabElement: {
     prototype: HTMLAppFabElement;
@@ -179,6 +176,12 @@ declare global {
   var HTMLAppHomeElement: {
     prototype: HTMLAppHomeElement;
     new (): HTMLAppHomeElement;
+  };
+
+  interface HTMLAppItemElement extends Components.AppItem, HTMLStencilElement {}
+  var HTMLAppItemElement: {
+    prototype: HTMLAppItemElement;
+    new (): HTMLAppItemElement;
   };
 
   interface HTMLAppLoginElement extends Components.AppLogin, HTMLStencilElement {}
@@ -204,10 +207,10 @@ declare global {
     'app-cadastro-customer': HTMLAppCadastroCustomerElement
     'app-cadastro-item': HTMLAppCadastroItemElement
     'app-customer': HTMLAppCustomerElement
-    'app-item': HTMLAppItemElement
     'app-fab': HTMLAppFabElement
     'app-header': HTMLAppHeaderElement
     'app-home': HTMLAppHomeElement
+    'app-item': HTMLAppItemElement
     'app-Login': HTMLAppLoginElement
     'app-open-cart-modal': HTMLAppOpenCartModalElement
     'app-root': HTMLAppRootElement
@@ -218,10 +221,10 @@ declare global {
     'app-cadastro-customer': HTMLAppCadastroCustomerElement;
     'app-cadastro-item': HTMLAppCadastroItemElement;
     'app-customer': HTMLAppCustomerElement;
-    'app-item': HTMLAppItemElement;
     'app-fab': HTMLAppFabElement;
     'app-header': HTMLAppHeaderElement;
     'app-home': HTMLAppHomeElement;
+    'app-item': HTMLAppItemElement;
     'app-Login': HTMLAppLoginElement;
     'app-open-cart-modal': HTMLAppOpenCartModalElement;
     'app-root': HTMLAppRootElement;

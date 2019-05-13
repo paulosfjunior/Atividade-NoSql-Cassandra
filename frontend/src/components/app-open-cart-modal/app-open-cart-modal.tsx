@@ -1,12 +1,12 @@
 import { Component, Prop, Element, Event, EventEmitter, Listen } from "@stencil/core";
-import { CartProvider } from "../../global/defaultProvider";
+import { CartProvider } from "../../global/MockProvider";
 
 @Component({
     tag: "app-open-cart-modal",
     styleUrl: "app-open-cart-modal.css"
 })
 export class appOpenCartModal {
-    @Prop({ mutable: true }) open
+    @Prop({ mutable: true }) open = false
     @Prop({ mutable: true }) cartProvider: CartProvider = null
     @Element() el: HTMLElement;
     @Event() close: EventEmitter
@@ -28,13 +28,13 @@ export class appOpenCartModal {
                 {this.cartProvider.getEnableCart() ? [this.cartProvider.getEnableCart()].map(cart => {
                     return [
                         <div>
-                            <h1>{(() => { console.log(cart.items); return cart.customer.name })()}</h1>
+                            <h1>{(() => {return cart.clente.nome })()}</h1>
 
-                            {cart.items.length ? cart.items.map(cartItem => {
-                                return <ion-item>{cartItem.name}<div class="cartItemPrice">{cartItem.price}</div></ion-item>
+                            {cart.carrinho.length ? cart.carrinho.map(cartItem => {
+                                return <ion-item>{cartItem.produto +" *"+cartItem.quantidade }<div class="cartItemPrice">{cartItem.valor_total}</div></ion-item>
                             })
                                 : <h4 class="emptyCart">Carrinho vazio</h4>}
-                            {this.cartProvider.getEnableCart().items.length ?<div>
+                            {this.cartProvider.getEnableCart().carrinho.length ?<div>
                                 <div class="dropdown">
                                     <ion-button id="endCart">Finalizar Compra</ion-button>
                                     <div class="dropdown-content">

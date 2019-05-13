@@ -1,12 +1,12 @@
 import { Component } from '@stencil/core';
-import { Customer } from '../../interfaces';
+import { Cliente } from '../../interfaces';
 
 @Component({
   tag: 'app-root',
   styleUrl: 'app-root.css'
 })
 export class AppRoot {
-  loggedUser:Customer
+  loggedUser:Cliente
   constructor(){
     this.loggedUser = JSON.parse(localStorage.getItem("loggedUser"))
     console.log(localStorage.getItem("loggedUser"))

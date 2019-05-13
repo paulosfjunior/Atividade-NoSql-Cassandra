@@ -1,6 +1,7 @@
 import { Component, Element, State } from '@stencil/core';
 import "@ionic/core"
-import { ItemProvider, CartProvider } from '../../global/defaultProvider';
+import { ItemProvider, CartProvider } from '../../global/MockProvider';
+import { Pedido, Produto } from '../../interfaces';
 
 @Component({
   tag: 'app-home',
@@ -9,8 +10,22 @@ import { ItemProvider, CartProvider } from '../../global/defaultProvider';
 export class AppHome {
   @Element() el;
   @State() cartsProvider = new CartProvider();
-  @State() itemsProvider = new ItemProvider()
-  componentDidLoad() { }
+  @State() itemsProvider = new ItemProvider();
+  @State() cartList:Pedido[] = [];
+  @State() itemList:Produto[] = []
+  componentDidLoad() { 
+    this.cartsProvider.updateList()
+    this.itemsProvider.updateList()
+  }
+  constructor(){
+    this.itemsProvider.getList().subscribe(list=>{
+      this.itemList = list
+    })
+    this.cartsProvider.getList().subscribe(list=>{
+      this.cartList = list
+    })
+  }
+  
 
 
   render() {
@@ -19,12 +34,12 @@ export class AppHome {
       <ion-content padding>
         <app-fab></app-fab>
         <ion-list>
-          {this.cartsProvider.list().map(row => {
+          {this.cartList.map(row => {
             return [
               <ion-card>
-                <ion-card-title>{row.customer.name}</ion-card-title>
-                {row.items.map(cartItem => {
-                  return <div><br></br><ion-item>{cartItem.name}<div class="cartItemPrice">{cartItem.price}</div></ion-item></div>
+                <ion-card-title>{row.clente.nome}</ion-card-title>
+                {row.carrinho.map(cartItem => {
+                  return <div><br></br><ion-item>{cartItem.produto}<div class="cartItemPrice">{cartItem.valor_unitario}</div></ion-item></div>
                 })}
 
               </ion-card>

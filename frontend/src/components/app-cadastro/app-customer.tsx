@@ -1,22 +1,24 @@
 import { Component, State, Element } from '@stencil/core';
-import { CustomerProvider } from '../../global/defaultProvider';
-import { Customer } from '../../interfaces';
+import { CustomerProvider } from '../../global/MockProvider';
+import { Cliente } from '../../interfaces';
 
 @Component({
   tag: 'app-customer',
   styleUrl: 'app-cadastro.css'
 })
 export class AppCadastroCustomer {
-  @State() lista: Customer[];
+  @State() lista: Cliente[];
   @State() provider = new CustomerProvider();
   @State() update: number = 0
   @Element() el: HTMLElement;
 
   constructor() {
-    this.lista = this.provider.list()
+    this.provider.getList().subscribe(list =>{
+      this.lista = list
+    })
   }
-  componentDidUpdate() {
-    this.lista = this.provider.list()
+  componentDidLoad() {
+    this.provider.updateList()
   }
   opemModalCreate() {
     //@ts-ignore
@@ -31,7 +33,7 @@ export class AppCadastroCustomer {
             <ion-card-header>
               <ion-card-title>
                 <ion-row>
-                  {row.name}
+                  {row.nome}
                   <div class="right">
                     <ion-button onClick={() => { this.provider.remove(row); this.update++ }}><ion-icon name="trash"></ion-icon></ion-button>
                     <ion-button onClick={() => { this.openEditModal(row); this.update++ }}><ion-icon name="create"></ion-icon></ion-button>
@@ -47,7 +49,7 @@ export class AppCadastroCustomer {
       <app-cadastro-customer id="edit" onCreate={(e) => { this.provider.edit(e.detail.new, e.detail.old); this.update++ }}></app-cadastro-customer>
     </div>]
   }
-  openEditModal(row: Customer) {
+  openEditModal(row: Cliente) {
     //@ts-ignore
     this.el.querySelector("#edit").open = true
     //@ts-ignore

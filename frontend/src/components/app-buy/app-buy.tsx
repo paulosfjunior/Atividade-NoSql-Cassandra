@@ -1,15 +1,28 @@
 import { Component, State, Element } from "@stencil/core";
-import { ItemProvider, CartProvider } from "../../global/defaultProvider";
+import { ItemProvider, CartProvider } from "../../global/MockProvider";
+import { Pedido, Produto } from "../../interfaces"
 
 @Component({
     tag: 'app-buy',
     styleUrl: 'app-buy.css'
 })
 export class appbuyComponent {
-    @State()itemsProvider = new ItemProvider();
-    @State()cartProvider = new CartProvider()
+    @State() itemsProvider = new ItemProvider();
+    @State() cartProvider = new CartProvider()
+    @State() cartList: Pedido[] = []
+    @State() itemsList: Produto[] = []
     @State() update = 0
-    @Element() el:HTMLElement;
+    @Element() el: HTMLElement;
+
+    constructor() {
+        this.itemsProvider.getList().subscribe(list => {
+            this.itemsList = list
+        })
+        this.cartProvider.getList().subscribe(list => {
+            this.cartList = list
+        })
+    }
+    componentDidLoad() { this.itemsProvider.updateList(); this.cartProvider.updateList() }
     render() {
         return [<div>
             <app-header name="Nova Compra" isCart={true} isHome={false}></app-header>
@@ -18,31 +31,36 @@ export class appbuyComponent {
                 <ion-toolbar>
                     <ion-title>Selecione os item que deseja comprar</ion-title>
                 </ion-toolbar>
-                {this.cartProvider.getEnableCart()? 
-                <ion-button onClick={()=>{this.showModal(true);this.update++}}><ion-icon name="cart"></ion-icon>ver Carrinho</ion-button>
-                :
-                <ion-button onClick={()=>{this.cartProvider.newCart();this.update++}}><ion-icon name="cart"></ion-icon>Novo Carrinho</ion-button>}
+                {this.cartProvider.getEnableCart() ?
+                    <ion-button onClick={() => { this.showModal(true); this.update++ }}><ion-icon name="cart"></ion-icon>ver Carrinho</ion-button>
+                    :
+                    <ion-button onClick={() => { this.cartProvider.newCart(); this.update++ }}><ion-icon name="cart"></ion-icon>Novo Carrinho</ion-button>}
 
             </ion-header>
-                {this.cartProvider.getEnableCart()? 
-            <ion-list>
-                {
-                    this.itemsProvider.list().map(item => {
-                        return <ion-item >
-                            <ion-row>{item.name}<button onClick={()=>{this.cartProvider.addItemToCart(item);this.update++}} class="cartItemPrice B">{item.price}</button></ion-row>
-                            
+            {this.cartProvider.getEnableCart() ?
+                <ion-list>
+                    {
+                        this.itemsList.map(item => {
+                            return <ion-item >
+                                <div class="produto">{item.nome}
+                                    <div>
+                                        qnt:<input type="number" onChange={(e:any)=>{item.quantidade = e.target.value;this.update++}}/>
+                                    </div>
+                                    <button class="Price B" onClick={() => { this.cartProvider.addItemToCart(item); this.update++ }} >{(item.preco * item.quantidade)}<br></br>Comprar</button>
+                                </div>
 
-                        </ion-item>
-                    })
-                }
-            </ion-list>:""}
-            <app-open-cart-modal onClose={()=>{this.update++}} cartProvider={this.cartProvider}></app-open-cart-modal>
+
+                            </ion-item>
+                        })
+                    }
+                </ion-list> : ""}
+            <app-open-cart-modal onClose={() => { this.update++ }} cartProvider={this.cartProvider}></app-open-cart-modal>
 
         </div>
         ]
     }
     showModal(type: boolean) {
-        if(type){
+        if (type) {
             this.el.querySelector("app-open-cart-modal").open = true
         }
     }

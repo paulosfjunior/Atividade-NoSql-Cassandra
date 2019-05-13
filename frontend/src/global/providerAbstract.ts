@@ -1,72 +1,61 @@
-import { Customer, Item, Cart } from "../interfaces";
+import { Cliente, ClienteLogin, Produto, Pedido} from '../interfaces';
+import { BehaviorSubject, Observable } from "rxjs";
+import { DefaultRequest, DefaultRequestMethod } from "../helpers/utils";
 
 export abstract class DefaultCustomerProvider {
-    public abstract list(qtn?: number): Customer[];
-    public abstract insert(customer: Customer): void;
-    public abstract edit(newcustomer: Customer, oldCustomer: Customer): void;
-    public abstract remove(customer: Customer): void;
-    public abstract tryLogin(email: string, pass: string): Customer;
+    public list: BehaviorSubject<Cliente[]> = new BehaviorSubject([])
+
+    public getList():Observable<Cliente[]>{
+        return this.list.asObservable();
+    }
+    public getLastList(): Cliente[] {
+        return this.list.getValue()
+    }
+    public abstract updateList(qtn?: number): void
+    public abstract insert(customer: Cliente): void;
+    public abstract edit(newcustomer: Cliente, oldCustomer: Cliente): void;
+    public abstract remove(customer: Cliente): void;
+    public abstract tryLogin(login:ClienteLogin): Promise<Cliente>;
     public request(method: DefaultRequestMethod, address: string, body: Object) {
         return DefaultRequest(method, address, body)
     }
 }
 export abstract class DefaultItemProvider {
-    public abstract list(qtn?: number): Item[];
-    public abstract insert(customer: Item): void;
-    public abstract edit(newcustomer: Item, oldCustomer: Item): void;
-    public abstract remove(customer: Item): void;
+    public list: BehaviorSubject<Produto[]> = new BehaviorSubject([])
+
+    public getList():Observable<Produto[]>{
+        return this.list.asObservable();
+    }
+    public getLastList(): Produto[] {
+        return this.list.getValue()
+    }
+    public abstract updateList(qtn?: number): void;
+    public abstract insert(customer: Produto): void;
+    public abstract edit(newcustomer: Produto, oldCustomer: Produto): void;
+    public abstract remove(customer: Produto): void;
     public request(method: DefaultRequestMethod, address: string, body: Object) {
         return DefaultRequest(method, address, body)
     }
 }
 export abstract class DefaultCartProvider {
-    public abstract list(qtn?: number): Cart[];
-    public abstract insert(customer: Cart): void;
-    public abstract edit(newcustomer: Cart, oldCustomer: Cart): void;
-    public abstract remove(customer: Cart): void;
-    public abstract getCart(cart: Cart): Cart;
-    public abstract getEnableCart(): Cart;
+    public list: BehaviorSubject<Pedido[]> = new BehaviorSubject([])
+
+    public getList():Observable<Pedido[]>{
+        return this.list.asObservable();
+    }
+    public getLastList(): Pedido[] {
+        return this.list.getValue()
+    }
+    public abstract updateList(qtn?: number): void
+    public abstract insert(customer: Pedido): void;
+    public abstract edit(newcustomer: Pedido, oldCustomer: Pedido): void;
+    public abstract remove(customer: Pedido): void;
+    public abstract getEnableCart(): Pedido;
     public abstract newCart(): void;
     public abstract closeEnableCart(type: string): void;
-    public abstract addItemToCart(item: Item): void;
+    public abstract addItemToCart(item: Produto): void;
     public request(method: DefaultRequestMethod, address: string, body: Object) {
         return DefaultRequest(method, address, body)
     }
 }
 
-const apiUrl = 'localhost:8080';
-
-export async function DefaultRequest(method: DefaultRequestMethod, address: string, body: Object ) {
-    try {
-        const token = TokenController.get();
-        const res = await fetch(`${apiUrl}${address}`, {
-            headers: { 'Content-Type': 'application/json', 'Authorization': `bearer ${token}` },
-            credentials: 'include',
-            method: method,
-            body: JSON.stringify(body)
-        });
-        return await res.json();
-    } catch(err) {
-        throw err;
-    }
-}
-
-export class TokenController {    
-    static TokenKey: string = "session_token";
-    static get():string{
-        return localStorage.getItem(this.TokenKey)
-    }
-    static set(newToken:string){
-        localStorage.setItem(this.TokenKey,newToken)
-    }
-    static remove(){
-        localStorage.getItem(this.TokenKey)
-    }
-}
-
-export enum DefaultRequestMethod {
-    GET="GET",
-    POST="POST",
-    PUT="PUT",
-    DELETE="DELETE"
-}

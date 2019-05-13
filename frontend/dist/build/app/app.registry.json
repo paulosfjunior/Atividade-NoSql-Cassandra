@@ -1,0 +1,259 @@
+{
+  "namespace": "App",
+  "fsNamespace": "app",
+  "loader": "../app.js",
+  "global": "app.global.js",
+  "core": "app.bwxqidh8.js",
+  "corePolyfilled": "app.nvosjd83.js",
+  "components": {
+    "app-Login": {
+      "bundleIds": {
+        "$": "5ovrgdgf"
+      }
+    },
+    "app-buy": {
+      "bundleIds": {
+        "$": "3zx6falo"
+      }
+    },
+    "app-cadastro-customer": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      }
+    },
+    "app-cadastro-item": {
+      "bundleIds": {
+        "$": "hrvkbnzt"
+      }
+    },
+    "app-customer": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      }
+    },
+    "app-fab": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      }
+    },
+    "app-header": {
+      "bundleIds": {
+        "ios": "yvollwer",
+        "md": "qa55kzwh"
+      }
+    },
+    "app-home": {
+      "bundleIds": {
+        "$": "4ov18dlx"
+      }
+    },
+    "app-item": {
+      "bundleIds": {
+        "$": "hrvkbnzt"
+      }
+    },
+    "app-open-cart-modal": {
+      "bundleIds": {
+        "$": "3zx6falo"
+      }
+    },
+    "app-root": {
+      "bundleIds": {
+        "$": "wa4wwnlk"
+      }
+    },
+    "ion-app": {
+      "bundleIds": {
+        "$": "wa4wwnlk"
+      }
+    },
+    "ion-back-button": {
+      "bundleIds": {
+        "ios": "yvollwer",
+        "md": "qa55kzwh"
+      },
+      "encapsulation": "scoped"
+    },
+    "ion-button": {
+      "bundleIds": {
+        "ios": "1spvj0jn",
+        "md": "n2fo0pje"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-buttons": {
+      "bundleIds": {
+        "ios": "yvollwer",
+        "md": "qa55kzwh"
+      },
+      "encapsulation": "scoped"
+    },
+    "ion-card": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      },
+      "encapsulation": "scoped"
+    },
+    "ion-card-header": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-card-subtitle": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-card-title": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-content": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-fab": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-fab-button": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-fab-list": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-header": {
+      "bundleIds": {
+        "ios": "1spvj0jn",
+        "md": "n2fo0pje"
+      }
+    },
+    "ion-icon": {
+      "bundleIds": {
+        "$": "l3elbd0z"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-input": {
+      "bundleIds": {
+        "ios": "1spvj0jn",
+        "md": "n2fo0pje"
+      },
+      "encapsulation": "scoped"
+    },
+    "ion-item": {
+      "bundleIds": {
+        "ios": "6mpp5kz8",
+        "md": "uy5uh3kw"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-item-group": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      }
+    },
+    "ion-label": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      },
+      "encapsulation": "scoped"
+    },
+    "ion-list": {
+      "bundleIds": {
+        "ios": "47sg0nlc",
+        "md": "stx7rn2v"
+      }
+    },
+    "ion-list-header": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-nav": {
+      "bundleIds": {
+        "$": "wa4wwnlk"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-radio": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-radio-group": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      }
+    },
+    "ion-ripple-effect": {
+      "bundleIds": {
+        "$": "z9nt6ntd"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-route": {
+      "bundleIds": {
+        "$": "wa4wwnlk"
+      }
+    },
+    "ion-router": {
+      "bundleIds": {
+        "$": "wa4wwnlk"
+      }
+    },
+    "ion-row": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-title": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      },
+      "encapsulation": "shadow"
+    },
+    "ion-toolbar": {
+      "bundleIds": {
+        "ios": "ua0icobp",
+        "md": "bfmnpqny"
+      },
+      "encapsulation": "shadow"
+    }
+  }
+}

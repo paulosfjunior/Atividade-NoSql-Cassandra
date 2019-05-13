@@ -1,17 +1,17 @@
 import "@ionic/core"
 import { Component, State } from "@stencil/core";
-import { CustomerProvider } from "../../global/defaultProvider";
+import { CustomerProvider } from "../../global/MockProvider";
 
 @Component({
     tag: 'app-Login',
-    styleUrl: 'app-Login.css'
+    styleUrl: 'app-login.css'
 })
 export class AppLogin {
-    @State() email:string
-    @State() pass:string
-    provider:CustomerProvider = new CustomerProvider()
-    constructor(){
-        
+    @State() email: string
+    @State() pass: string
+    provider: CustomerProvider = new CustomerProvider()
+    constructor() {
+
     }
     render() {
         return [
@@ -34,11 +34,12 @@ export class AppLogin {
             </ion-content>
         ]
     }
-    logIn(): void {
-        console.log(window.location)
-        let item = this.provider.tryLogin(this.email,this.pass)
-        item?
-        (()=>{localStorage.setItem("loggedUser",JSON.stringify(item));window.location.reload()})():null
-        
+    async logIn() {
+        let item = await this.provider.tryLogin({"senha":this.pass,"usuario":this.email})
+        await item ? (() => {
+            localStorage.setItem("loggedUser", JSON.stringify(item));
+            window.location.reload()
+        })() : null
+
     }
 }
