@@ -2,6 +2,7 @@ import { Component, Element, State } from '@stencil/core';
 import "@ionic/core"
 import { ItemProvider, CartProvider } from '../../global/ServerProvider';
 import { Pedido, Produto } from '../../interfaces';
+import { ClienteController } from '../../helpers/utils';
 
 @Component({
   tag: 'app-home',
@@ -38,8 +39,11 @@ export class AppHome {
             return [
               <ion-card>
                 <ion-card-title>{row.cliente.nome}</ion-card-title>
+                <ion-card-subtitle>R$:{row.valor_pedido}<br></br>{new Date(row.data_pedido).toUTCString().split("00:")[0]}</ion-card-subtitle>
                 {row.carrinho.map(cartItem => {
+                  if(row.cliente.id = ClienteController.get().id){
                   return <div><br></br><ion-item>{cartItem.produto}<div class="cartItemPrice">{cartItem.valor_unitario}</div></ion-item></div>
+                  }
                 })}
 
               </ion-card>

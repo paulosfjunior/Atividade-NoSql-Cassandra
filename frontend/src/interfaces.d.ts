@@ -68,8 +68,8 @@ export interface Pedido {
     cliente: clientePedido;
     data_pedido: Date;
     carrinho: itemCarrinho[];
-    valorPedido: number;
-    formaPagamento: string;
+    valor_pedido: number;
+    forma_pagamento: string;
     status: string
 
 }

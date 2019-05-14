@@ -32,7 +32,7 @@ export namespace Components {
     'open': boolean;
     'pass': string;
     'placeholders': any;
-    'rule': "Adiministrador" | "Usuario";
+    'rule': string;
     'user': string;
   }
   interface AppCadastroCustomerAttributes extends StencilHTMLAttributes {
@@ -44,7 +44,7 @@ export namespace Components {
     'open'?: boolean;
     'pass'?: string;
     'placeholders'?: any;
-    'rule'?: "Adiministrador" | "Usuario";
+    'rule'?: string;
     'user'?: string;
   }
 
@@ -95,11 +95,13 @@ export namespace Components {
   interface AppOpenCartModal {
     'cartProvider': CartProvider;
     'open': boolean;
+    'update': number;
   }
   interface AppOpenCartModalAttributes extends StencilHTMLAttributes {
     'cartProvider'?: CartProvider;
     'onClose'?: (event: CustomEvent) => void;
     'open'?: boolean;
+    'update'?: number;
   }
 
   interface AppRoot {}

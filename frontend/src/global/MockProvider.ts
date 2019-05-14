@@ -56,9 +56,9 @@ export class CartProvider extends DefaultCartProvider {
                 { id: 2, produto: "Coca-Cola", quantidade: 2, valor_unitario: 5.50, valor_total: 11.00 }
             ],
             cliente: { id: '1', nome: "Carlos Eduardo Benedetti", },
-            formaPagamento: "Cartão",
+            forma_pagamento: "Cartão",
             status: "Pago",
-            valorPedido: (3.56 + 11)
+            valor_pedido: (3.56 + 11)
         },
         {
             id: 1,
@@ -68,9 +68,9 @@ export class CartProvider extends DefaultCartProvider {
                 { id: 4, produto: "Laranja Kg", quantidade: 3, valor_unitario: 3.00, valor_total: 9.00 }
             ],
             cliente: { id: '1', nome: "Carlos Eduardo Benedetti", },
-            formaPagamento: "Cartão",
+            forma_pagamento: "Cartão",
             status: "Pago",
-            valorPedido: (3.56 + 11)
+            valor_pedido: (3.56 + 11)
         }
     ]
     updateList(): void {
@@ -96,13 +96,16 @@ export class CartProvider extends DefaultCartProvider {
         return this.lista.find(row => row.status == "não Pago")
     }
     newCart() {
-        this.lista.push({ id: 3, status: "não Pago", carrinho: [], cliente: ClienteController.get(), data_pedido: new Date(), valorPedido: 0, formaPagamento: null })
+        this.lista.push({ id: 3, status: "não Pago", carrinho: [], cliente: ClienteController.get(), data_pedido: new Date(), valor_pedido: 0, forma_pagamento: null })
     }
     closeEnableCart(type) {
-        this.lista[this.lista.findIndex((cart) => { return cart == this.getEnableCart() })].formaPagamento = type
+        this.lista[this.lista.findIndex((cart) => { return cart == this.getEnableCart() })].forma_pagamento = type
         this.lista[this.lista.findIndex((cart) => { return cart == this.getEnableCart() })].status = "Pago"
     }
     addItemToCart(item: Produto) {
         this.lista[this.lista.findIndex((cart) => { return cart == this.getEnableCart() })].carrinho.push({ "id": item.id, "produto": item.nome, "quantidade": item.quantidade, "valor_total": (item.preco * item.quantidade), "valor_unitario": item.preco })
+    }
+    removeItemFromCarrinho(){
+
     }
 }

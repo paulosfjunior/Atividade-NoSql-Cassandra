@@ -13,6 +13,9 @@ export async function DefaultRequest(method: DefaultRequestMethod, address: stri
 
             body: JSON.stringify(body)
         }
+        if(!TokenController.get()){
+            delete rec.headers['Authorization']
+        }
         if (method == DefaultRequestMethod.GET){delete rec['body'];delete rec['credentials']}
         console.log(rec)
         //@ts-ignore
@@ -32,7 +35,7 @@ export class ClienteController {
         localStorage.setItem(this.TokenKey, JSON.stringify(newToken))
     }
     static remove() {
-        localStorage.getItem(this.TokenKey)
+        localStorage.removeItem(this.TokenKey)
     }
 }
 export class TokenController {
@@ -44,7 +47,7 @@ export class TokenController {
         localStorage.setItem(this.TokenKey, newToken)
     }
     static remove() {
-        localStorage.getItem(this.TokenKey)
+        localStorage.removeItem(this.TokenKey)
     }
 }
 

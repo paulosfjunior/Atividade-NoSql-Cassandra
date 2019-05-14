@@ -45,8 +45,8 @@ export class AppCadastroCustomer {
           </ion-card>
         })}
       </ion-list>
-      <app-cadastro-customer id="cad" onCreate={(e) => { debugger;this.provider.insert(e.detail.new); this.update++ }}></app-cadastro-customer>
-      <app-cadastro-customer id="edit" onCreate={(e) => { debugger;this.provider.edit(e.detail.new); this.update++ }}></app-cadastro-customer>
+      <app-cadastro-customer id="cad" onCreate={(e) => { this.provider.insert(e.detail.new); this.update++ }}></app-cadastro-customer>
+      <app-cadastro-customer id="edit" onCreate={(e) => { this.provider.edit(e.detail.new); this.update++ }}></app-cadastro-customer>
     </div>]
   }
   openEditModal(row: Cliente) {

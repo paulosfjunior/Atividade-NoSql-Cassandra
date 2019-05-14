@@ -15,7 +15,7 @@ export class AppCadastroCustomer {
     @Prop({ mutable: true }) email: string;
     @Prop({ mutable: true }) pass: string;
     @Prop({ mutable: true }) open: boolean = false;
-    @Prop({ mutable: true }) rule: "Adiministrador" | "Usuario"
+    @Prop({ mutable: true }) rule: string
 
     @Event() create: EventEmitter<{ new: Cliente, old: Cliente }>;
     constructor() {
@@ -26,6 +26,9 @@ export class AppCadastroCustomer {
         this.user = nv.usuario
         this.endereco = nv.endereco
         this.email = nv.email
+        console.log(nv.cargo)
+        //@ts-ignore
+        this.rule = nv.cargo
     }
     
     render() {
@@ -61,12 +64,12 @@ export class AppCadastroCustomer {
 
                                     <ion-item>
                                         <ion-label>Administrador</ion-label>
-                                        <ion-radio onClick={(e: any) => { this.rule = e.target.value }} slot="start" value="Administrador"></ion-radio>
+                                        <ion-radio checked={this.rule == "Administrador"} onClick={(e: any) => { this.rule = e.target.value }} slot="start" value="Administrador"></ion-radio>
                                     </ion-item>
 
                                     <ion-item>
                                         <ion-label>Normal</ion-label>
-                                        <ion-radio onClick={(e: any) => { this.rule = e.target.value }} slot="start" value="Usuario"></ion-radio>
+                                        <ion-radio checked={this.rule == "Usuario"} onClick={(e: any) => { this.rule = e.target.value }} slot="start" value="Usuario"></ion-radio>
                                     </ion-item>
                                 </ion-radio-group>
                             </ion-list>

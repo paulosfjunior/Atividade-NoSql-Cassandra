@@ -54,6 +54,7 @@ export abstract class DefaultCartProvider {
     public abstract newCart(): void;
     public abstract closeEnableCart(type: string): void;
     public abstract addItemToCart(item: Produto): void;
+    public abstract removeItemFromCarrinho(itemCOd:Produto['id'])
     public request(method: DefaultRequestMethod, address: string, body: Object) {
         return DefaultRequest(method, address, body)
     }

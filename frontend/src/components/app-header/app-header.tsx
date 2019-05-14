@@ -1,4 +1,5 @@
 import { Component, Prop } from '@stencil/core';
+import { TokenController, ClienteController } from '../../helpers/utils';
 
 @Component({
   tag: 'app-header',
@@ -10,7 +11,8 @@ export class AppHeader {
   @Prop({ mutable: true }) isHome: boolean;
   @Prop({ mutable: true }) isCart: boolean;
   logOff() {
-    localStorage.clear();
+    TokenController.remove();
+    ClienteController.remove();
     window.location.reload()
   }
   render() {
