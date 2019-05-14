@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('../auth/passport');
 
 const pedidoService = require('../services/pedido.service');
 
@@ -8,9 +9,9 @@ const rotas = express.Router();
 // carregar rotas
 rotas.get('/', getAll);
 rotas.get('/:id', getById);
-rotas.post('/', createRegister);
-rotas.put('/:id', updateRegister);
-rotas.delete('/:id', deleteRegister);
+rotas.post('/', createRegister, getAll);
+rotas.put('/:id', updateRegister, getAll);
+rotas.delete('/:id', deleteRegister, getAll);
 rotas.get('/meus', getOwn);
 
 module.exports = rotas;
@@ -52,16 +53,11 @@ function getById(req, res) {
       });
 }
 
-function createRegister(req, res) {
+function createRegister(req, res, next) {
   pedidoService.criar(req.body)
       .then((resultado) => {
         if (resultado) {
-          pedidoService.listar()
-          .then(novaLista => {
-            res.status(200).json({
-              tipo: 'sucesso',
-              mensagem: 'Pedido cadastrado.'});
-          })
+          next();
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -75,17 +71,11 @@ function createRegister(req, res) {
       });
 }
 
-function updateRegister(req, res) {
+function updateRegister(req, res, next) {
   pedidoService.editar(req.params.id, req.body)
       .then((resultado) => {
-        if (resultado && (req.user.cargo === 'Admin' || req.user.id === req.params.id)) {
-          pedidoService.listar()
-          .then(novaLista => {
-            res.status(200).json({
-              tipo: 'sucesso',
-              resultado: novaLista,
-              mensagem: 'Pedido ' + req.params.id + ' foi alterado.'});
-          })
+        if (resultado && (req.user.cargo === 'Administrador' || req.user.id === req.params.id)) {
+          next();
         } else {
           res.status(400).json({
             tipo: 'erro',
@@ -99,17 +89,11 @@ function updateRegister(req, res) {
       });
 }
 
-function deleteRegister(req, res) {
+function deleteRegister(req, res, next) {
   pedidoService.deletar(req.params.id)
       .then((resultado) => {
-        if (resultado && (req.user.cargo === 'Admin' || req.user.id === req.params.id)) {
-          pedidoService.listar()
-          .then(novaLista => {
-            res.status(200).json({
-              tipo: 'sucesso',
-              resultado: novaLista,
-              mensagem: 'Pedido ' + req.params.id + ' foi apagado.'});
-          })
+        if (resultado && (req.user.cargo === 'Administrador' || req.user.id === req.params.id)) {
+          next();
         } else {
           res.status(400).json({
             tipo: 'erro',

@@ -7,9 +7,9 @@ const pedidos = require('./pedido.routing');
 const produtos = require('./produto.routing');
 const usuarios = require('./usuario.routing');
 
-router.use('/pedidos', pedidos);
+router.use('/pedidos', passport.authenticate('jwt', { session: false }), pedidos);
 router.use('/produtos', produtos);
-router.use('/usuarios', usuarios);
+router.use('/usuarios', passport.authenticate('jwt', { session: false }), usuarios);
 router.use('/admin', passport.authenticate('adminJwt', { session: false }), admin);
 
 module.exports = router;
