@@ -18,6 +18,12 @@ module.exports = rotas;
 function getAll(req, res) {
   produtoService.listar()
       .then((resultado) => {
+        if (resultado.length > 1) {
+          resultado = resultado.map(item => {
+            item.preco = +(item.preco.toFixed(2));
+            return item;
+          });
+        }
         res.json({
           tipo: 'sucesso',
           resultado,
@@ -34,6 +40,7 @@ function getAll(req, res) {
 function getById(req, res) {
   produtoService.procurar(req.params.id)
       .then((resultado) => {
+        console.log({resultado})
         if (resultado) {
           res.json({
             tipo: 'sucesso',

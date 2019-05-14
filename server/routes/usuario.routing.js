@@ -8,13 +8,13 @@ const { hashPasswordWithSalt, hashPassword, genAccessToken, genRefreshToken } = 
 const rotas = express.Router();
 
 // carregar rotas
-rotas.get('/', getAll);
-rotas.get('/:id', getById);
-rotas.post('/', createRegister, getAll);
-rotas.put('/:id', updateRegister, getAll);
-rotas.delete('/:id', deleteRegister, getAll);
+rotas.get('/', passport.authenticate('jwt', { session: false }), getAll);
+rotas.get('/:id', passport.authenticate('jwt', { session: false }), getById);
+rotas.post('/', passport.authenticate('jwt', { session: false }), createRegister, getAll);
+rotas.put('/:id', passport.authenticate('jwt', { session: false }), updateRegister, getAll);
+rotas.delete('/:id', passport.authenticate('jwt', { session: false }), deleteRegister, getAll);
 rotas.post('/autenticar', authUser);
-rotas.post('/logout', logoutUser);
+rotas.post('/logout', passport.authenticate('jwt', { session: false }), logoutUser);
  
 module.exports = rotas;
 
@@ -75,9 +75,9 @@ function createRegister(req, res, next) {
 }
 
 function updateRegister(req, res, next) {
+  console.log(req.body)
   usuarioServico.editar(req.params.id, req.body)
       .then((resultado) => {
-        console.log(req.user)
         if (resultado && (req.user.cargo === 'Administrador' || req.user.id === req.params.id)) {
           next();
         } else {

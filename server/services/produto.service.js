@@ -82,7 +82,7 @@ function editarRegistro(id, p) {
     tabelaExiste()
       .then((r) => {
         let parametro = p;
-        parametro.preco = parseFloat(p.preco);
+        parametro.preco =  parseFloat(p.preco);
         parametro.id = id;
 
         let query = 'UPDATE atividadenosql.produto SET ' +

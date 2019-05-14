@@ -19,6 +19,17 @@ module.exports = rotas;
 function getAll(req, res) {
   pedidoService.listar()
       .then((resultado) => {
+        if (resultado.length > 0) {
+          resultado = resultado.map(row => {
+            row.carrinho = row.carrinho.map(item => {
+              item.valor_unitario = +(item.valor_unitario.toFixed(2));
+              item.valor_total = +(item.valor_total.toFixed(2));
+              return item;
+            });
+            row.valor_pedido = +(row.valor_pedido.toFixed(2));
+            return row;
+          })
+        }
         res.json({
           tipo: 'sucesso',
           resultado,
@@ -26,6 +37,7 @@ function getAll(req, res) {
         });
       })
       .catch((erro) => {
+        console.log(erro)
         res.status(400).json({
           tipo: 'erro',
           mensagem: 'Não foi possivel carregar lista de pedidos.'});
