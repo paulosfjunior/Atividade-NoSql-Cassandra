@@ -21,11 +21,13 @@ function getAll(req, res) {
       .then((resultado) => {
         if (resultado.length > 0) {
           resultado = resultado.map(row => {
-            row.carrinho = row.carrinho.map(item => {
-              item.valor_unitario = +(item.valor_unitario.toFixed(2));
-              item.valor_total = +(item.valor_total.toFixed(2));
-              return item;
-            });
+            if (row.carrinho && row.carrinho.length > 0) {
+              row.carrinho = row.carrinho.map(item => {
+                item.valor_unitario = +(item.valor_unitario.toFixed(2));
+                item.valor_total = +(item.valor_total.toFixed(2));
+                return item;
+              });
+            }
             row.valor_pedido = +(row.valor_pedido.toFixed(2));
             return row;
           })

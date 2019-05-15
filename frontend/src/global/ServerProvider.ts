@@ -112,7 +112,8 @@ export class CartProvider extends DefaultCartProvider {
       debugger
       if (repeatId != -1) {
         pedido.carrinho[repeatId].quantidade = pedido.carrinho[repeatId].quantidade + item.quantidade
-        pedido.carrinho[repeatId].valor_total = pedido.carrinho[repeatId].valor_unitario * pedido.carrinho[repeatId].quantidade
+        console.log(pedido.carrinho[repeatId].quantidade)
+        pedido.carrinho[repeatId].valor_total = pedido.carrinho[repeatId].valor_unitario * +(pedido.carrinho[repeatId].quantidade)
       }
       else {
         pedido.carrinho.push({ "id": item.id, "produto": item.nome, "quantidade": item.quantidade, "valor_total": (item.preco * item.quantidade), "valor_unitario": item.preco })

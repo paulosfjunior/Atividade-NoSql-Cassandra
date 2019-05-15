@@ -37,7 +37,7 @@ export class appOpenCartModal {
                                 : <h4 class="emptyCart">Carrinho vazio</h4>}
                             {this.cartProvider.getEnableCart().carrinho && this.cartProvider.getEnableCart().carrinho.length?<div>
                                 <div class="dropdown">
-                                    <ion-button id="endCart">Finalizar Compra</ion-button>
+                                    <ion-button id="endCart">Finalizar Compra (R${this.cartProvider.getEnableCart().valor_pedido})</ion-button>
                                     <div class="dropdown-content">
                                     <ion-button expand="full" class="Credito" color="danger" onClick={() => { this.endCart("Credito") }}>Credito</ion-button>
                                     <ion-button expand="full" class="Debito" color="danger" onClick={() => { this.endCart("Debito") }}>Debito</ion-button>

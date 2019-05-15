@@ -46,7 +46,7 @@ export class appbuyComponent {
                                     <div>
                                         qnt:<input type="number" value={item.quantidade?item.quantidade:1} onChange={(e:any)=>{item.quantidade = e.target.value;this.update++}}/>
                                     </div>
-                                    <button class="Price B" onClick={() => { this.cartProvider.addItemToCart(item); this.update++ }} >{(item.preco * item.quantidade?item.quantidade:(()=>{item.quantidade = 1;return 1})())}<br></br>Comprar</button>
+                                    <button class="Price B" onClick={() => { this.cartProvider.addItemToCart(item); this.update++ }} >{(item.preco * (item.quantidade?item.quantidade:(()=>{item.quantidade = 1;return 1})()))}<br></br>Comprar</button>
                                 </div>
 
 
