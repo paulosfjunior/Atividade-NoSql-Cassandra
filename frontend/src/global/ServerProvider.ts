@@ -22,6 +22,10 @@ export class CustomerProvider extends DefaultCustomerProvider {
     const res = await this.request(DELETE, '/usuarios/' + item.id, item);
     this.list.next(res.resultado)
   }
+  async logOut(){
+    const res = await this.request(POST, '/logout', {});
+    return res
+  }
   async tryLogin(login: ClienteLogin) {
     const res = await this.request(POST, '/usuarios/autenticar', login);
     const tokenDecode = this.parseJwt(res.token)
@@ -109,7 +113,6 @@ export class CartProvider extends DefaultCartProvider {
       const repeatId = pedido.carrinho.findIndex(row => {
         return row.id == item.id
       })
-      debugger
       if (repeatId != -1) {
         pedido.carrinho[repeatId].quantidade = pedido.carrinho[repeatId].quantidade + item.quantidade
         console.log(pedido.carrinho[repeatId].quantidade)

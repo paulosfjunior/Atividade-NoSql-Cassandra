@@ -12,7 +12,7 @@ export class AppFab {
     render() {
         if (ClienteController.get().cargo == "Administrador") {
             return [
-                <ion-fab style={{ "z-index": "9" }} vertical="bottom" horizontal="end" slot="fixed">
+                <ion-fab style={{ "z-index": "9" }} vertical="bottom" horizontal="end" >
                     <ion-fab-button>
                         <ion-icon name="add"></ion-icon>
                     </ion-fab-button>

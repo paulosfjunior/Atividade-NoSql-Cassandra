@@ -42,11 +42,11 @@ export class appbuyComponent {
                     {
                         this.itemsList.map(item => {
                             return <ion-item >
-                                <div class="produto">{item.nome}
+                                <div class="produto"><div style={{"width":"30vh"}}>{item.nome}</div>
                                     <div>
-                                        qnt:<input type="number" value={item.quantidade?item.quantidade:1} onChange={(e:any)=>{item.quantidade = e.target.value;this.update++}}/>
+                                        qnt:<input type="number" value={item.quantidade?item.quantidade:1} onChange={(e:any)=>{item.quantidade = +(e.target.value);this.update++}}/>
                                     </div>
-                                    <button class="Price B" onClick={() => { this.cartProvider.addItemToCart(item); this.update++ }} >{(item.preco * (item.quantidade?item.quantidade:(()=>{item.quantidade = 1;return 1})()))}<br></br>Comprar</button>
+                                    <button class="Price B" onClick={() => { this.cartProvider.addItemToCart(item); this.update++ }} >{(item.preco * (item.quantidade?item.quantidade:(()=>{item.quantidade = 1;return 1})())).toFixed(2)}<br></br>Comprar</button>
                                 </div>
 
 

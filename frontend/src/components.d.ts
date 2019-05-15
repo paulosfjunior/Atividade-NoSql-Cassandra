@@ -73,11 +73,13 @@ export namespace Components {
   }
 
   interface AppHeader {
+    'clienteProvider': any;
     'isCart': boolean;
     'isHome': boolean;
     'name': string;
   }
   interface AppHeaderAttributes extends StencilHTMLAttributes {
+    'clienteProvider'?: any;
     'isCart'?: boolean;
     'isHome'?: boolean;
     'name'?: string;
