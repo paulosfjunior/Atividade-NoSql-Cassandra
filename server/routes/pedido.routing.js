@@ -88,13 +88,7 @@ function createRegister(req, res, next) {
 function updateRegister(req, res, next) {
   pedidoService.editar(req.params.id, req.body)
       .then((resultado) => {
-        if (resultado && (req.user.cargo === 'Administrador' || req.user.id === req.params.id)) {
-          next();
-        } else {
-          res.status(400).json({
-            tipo: 'erro',
-            mensagem: 'Pedido ' + req.params.id + ' não foi alterado.'});
-        }
+        next();
       })
       .catch((erro) => {
         res.status(400).json({

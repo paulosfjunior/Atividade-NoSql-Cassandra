@@ -124,6 +124,7 @@ function authUser(req, res) {
       usuarioServico.editar(user.id, user)
           .then((resultado) => {
             if (resultado) {
+              console.log({user, refreshToken})
               return res.status(200).json({
                 token: genAccessToken(user, refreshToken),
                 message: info.message 
