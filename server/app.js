@@ -12,7 +12,7 @@ const app = express();
 
 const routes = require('./routes/routes');
 
-const whitelist = ['http://localhost:4200', '10.64.206.158', 'http://localhost:3333', 'http://10.64.206.158:3333', 'http://localhost:3333'];
+const whitelist = ['http://localhost:3333', 'http://10.64.206.158:3333'];
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
