@@ -21,7 +21,7 @@
 
 ### O servidor estará sendo executada no caminho [localhost:8080](http://localhost:8080/).
 
-***Modelo de request para o server [Wiki](https://gitlab.com/paulosfjunior/atividade-nosql-cassandra/wikis/Rotas-e-formatos-para-Req-e-Res)***
+***Modelo de request para o server [Wiki-Gitlab](https://gitlab.com/paulosfjunior/atividade-nosql-cassandra/wikis/Rotas-e-formatos-para-Req-e-Res) [Wiki-Github](https://github.com/paulosfjunior/Atividade-NoSql-Cassandra/wiki/Rotas-e-formatos-para-Req-e-Res)***
 
 ### ***Cliente***
 
