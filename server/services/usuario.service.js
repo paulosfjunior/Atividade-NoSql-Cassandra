@@ -106,7 +106,7 @@ function editarRegistro(id, p) {
           let parametro = p;
           parametro.hash = res.hash;
           parametro.salt = res.salt;
-          parametro.refresh_token = res.refresh_token;
+          // parametro.refresh_token = res.refresh_token;
 
           let query = 'UPDATE atividadenosql.usuario SET ' +
                       'usuario = :usuario, ' + 
