@@ -19,7 +19,7 @@
     "rxjs": "^6.5.2"
   },
   "devDependencies": {
-    "@stencil/core": "0.17.0",
+    "@stencil/core": "4.43.5",
     "workbox-build": "3.4.1"
   }
 }
